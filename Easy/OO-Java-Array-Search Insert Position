@@ -4,7 +4,7 @@
 **You may assume no duplicates in the array.
 **Example:
 **Given nums = [1,3,5,6], 5
-**Output = 2
+**Output: 2
 */
 
 class Solution {
@@ -22,6 +22,7 @@ class Solution {
             else
                 return middle;
         }
+        
         if (target <= nums[low]) 
             result = low;
         else 
