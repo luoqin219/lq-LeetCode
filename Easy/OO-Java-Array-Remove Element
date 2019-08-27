@@ -1,0 +1,31 @@
+/*** Easy Problem 4: Remove Element */
+/**
+**Given an array nums and a value val, remove all instances of that value in-place and return the new length.
+**Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+**Example:
+**Given nums = [3,2,2,3], val = 3,
+**Your function should return length = 2, with the first two elements of nums being 2.
+*/
+
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int i = 0;
+        if (nums.length == 0) return 0;
+        if (nums.length == 1)
+            if (nums[0] == val) return 0;
+            else return 1;
+        
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != val){
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        return i;
+        }
+}
+
+/**
+**Runtime: 0 ms, faster than 100.00% of Java online submissions for Remove Element.
+**Memory Usage: 36.3 MB, less than 100.00% of Java online submissions for Remove Element.
+*/
