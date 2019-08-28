@@ -1,0 +1,34 @@
+/*** Easy Problem 8: Contains Duplicate */
+/**
+**Given an array of integers, find if the array contains any duplicates.
+**Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
+**Example:
+**Input: [1,1,1,3,3,4,3,2,4,2]
+**Output: true
+*/
+
+import java.util.*;
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        boolean result = false;
+        Hashtable<Integer,Integer> table = new Hashtable<Integer,Integer>();
+        if (nums.length > 0){
+            table.put(nums[0],1);
+        }
+        for (int i = 1; i < nums.length; i++){
+            if (table.containsKey(nums[i])){
+                table.put(nums[i],table.get(nums[i])+1);
+            }
+            else
+                table.put(nums[i],1);
+        }
+        
+        for (int j = 0; j < nums.length; j++){
+            if (table.get(nums[j]) > 1)
+                result = true;
+        }
+        
+        return result;
+    }
+}
