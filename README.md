@@ -9,7 +9,7 @@ Records of all LeetCode exercises.
 
 #### Array
 
-##### Two Sum
+##### [Two Sum](OO-Java-Array-Two Sum)
 
 ##### Search Insert Position
 
