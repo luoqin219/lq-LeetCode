@@ -1,8 +1,6 @@
 # lq-LeetCode
 Records of all LeetCode exercises. 
 
-[TOC]
-
 ## Easy
 
 ### OO-Java
@@ -36,6 +34,14 @@ Records of all LeetCode exercises.
 ##### Reverse Linked List
 
 ##### Middle of the Linked List
+
+#### Sort
+
+##### Valid Anagram
+
+##### Intersection of Two Arrays
+
+##### Sort Array By Parity 2
 
 #### Others
 
