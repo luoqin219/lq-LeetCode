@@ -19,6 +19,10 @@ Records of all LeetCode exercises.
 
 ##### Pascal's Triangle
 
+##### Pascal's Triangle 2
+
+##### Best Time to Buy and Sell Stock Series
+
 #### Hash Table
 
 ##### Contains Duplicate
