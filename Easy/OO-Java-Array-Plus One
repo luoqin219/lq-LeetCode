@@ -1,0 +1,42 @@
+/*** Easy Problem 20: Plus One */
+/**
+**Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
+**The digits are stored such that the most significant digit is at the head of the list, 
+**and each element in the array contain a single digit.
+**You may assume the integer does not contain any leading zero, except the number 0 itself.
+**Example:
+**Input: [1,2,3]
+**Output: [1,2,4]
+**Explanation: The array represents the integer 123.
+**Input: [4,3,2,1]
+**Output: [4,3,2,2]
+**Explanation: The array represents the integer 4321.
+*/
+
+/**
+* The newArr is created to handle the case that every digit in the old array is 9 and we need to have a new digit stored as 1.
+* The reason that I only give value to newArr[0] is that all other digits will be initialized as 0.
+*/
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int end = digits.length-1;
+        for (int i = end; i >= 0; i--){
+            if (digits[i] < 9){
+                digits[i]++;
+                return digits;
+            }
+            else
+                digits[i] = 0;
+        }
+        
+        int[] newArr = new int[digits.length+1];
+        newArr[0] = 1;
+        return newArr;
+    }
+}
+
+/**
+**Runtime: 0 ms, faster than 100.00% of Java online submissions for Plus One.
+**Memory Usage: 35.1 MB, less than 97.58% of Java online submissions for Plus One.
+*/

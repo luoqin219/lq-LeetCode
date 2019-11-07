@@ -32,7 +32,9 @@ Records of all LeetCode exercises.
 ##### Sort Array By Parity 2
 
 ##### Valid Anagram
+##### Pascal's Triangle 2
 
+##### Best Time to Buy and Sell Stock Series
 #### Hash Table
 
 ##### Contains Duplicate
@@ -52,7 +54,13 @@ Records of all LeetCode exercises.
 #### Map
 
 ##### Majority Element
+#### Sort
 
+##### Valid Anagram
+
+##### Intersection of Two Arrays
+
+##### Sort Array By Parity 2
 #### Others
 
 ##### Count Primes
