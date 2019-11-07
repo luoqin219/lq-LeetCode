@@ -77,4 +77,5 @@ Records of all LeetCode exercises.
 
 ## Google Interview Prep
 
-[Frequent Asked Problems](Frequent.md)
+[Frequently Asked Problems](Frequent.md)
+

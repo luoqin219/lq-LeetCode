@@ -53,3 +53,71 @@ class Solution {
 }
 ```
 
+Runtime: 13 ms, faster than 77.68% of Java online submissions for License Key Formatting.
+
+Memory Usage: 36.8 MB, less than 100.00% of Java online submissions for License Key Formatting.
+
+Time complexity: O(n)
+
+Space complexity: O(n)
+
+###  15. 3Sum
+
+Given an array `nums` of *n* integers, are there elements *a*, *b*, *c* in `nums` such that *a* + *b* + *c* = 0? Find all unique triplets in the array which gives the sum of zero.
+
+**Note:**
+
+The solution set must not contain duplicate triplets.
+
+**Example:**
+
+```
+Given array nums = [-1, 0, 1, 2, -1, -4],
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+```
+
+ 
+
+```java
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length < 3) return Collections.emptyList();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) break;
+            // skip the duplicates
+            if (i == 0 || (i > 0 && nums[i] != nums[i-1])) {
+                int low = i + 1, high = nums.length-1, sum = 0 - nums[i];
+                while (low < high) {
+                    if (nums[low] + nums[high] == sum) {
+                        res.add(Arrays.asList(nums[i], nums[low], nums[high]));
+                        // skip duplicates
+                        while (low < high && nums[low] == nums[low+1]) low++;
+                        while (low < high && nums[high] == nums[high-1]) high--;
+                        low++;
+                        high--;
+                    }
+                    else if (nums[low] + nums[high] < sum) low++;
+                    else high--;
+                }      
+            }
+        }
+        return res;
+    }
+}
+```
+
+Runtime: 26 ms, faster than 97.81% of Java online submissions for 3Sum.
+
+Memory Usage: 45.9 MB, less than 94.70% of Java online submissions for 3Sum.
+
+Time complexity: O(n^2) (thanks to two-pointer scan) 		(Sort the array - O(nlogn))
+
+Space complexity: O(n)
+
