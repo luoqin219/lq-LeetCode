@@ -1,15 +1,13 @@
 # lq-LeetCode
 Records of all LeetCode exercises. 
 
-[TOC]
-
 ## Easy
 
 ### OO-Java
 
 #### Array
 
-##### [Two Sum](OO-Java-Array-Two Sum)
+##### Two Sum
 
 ##### Search Insert Position
 
@@ -20,6 +18,20 @@ Records of all LeetCode exercises.
 ##### Merge Sorted Array
 
 ##### Pascal's Triangle
+
+##### Plus One
+
+##### Maximum Subarray
+
+#### Sort
+
+##### Intersection of Two Arrays
+
+##### Relative Sort Array
+
+##### Sort Array By Parity 2
+
+##### Valid Anagram
 
 #### Hash Table
 
@@ -36,6 +48,10 @@ Records of all LeetCode exercises.
 ##### Reverse Linked List
 
 ##### Middle of the Linked List
+
+#### Map
+
+##### Majority Element
 
 #### Others
 
