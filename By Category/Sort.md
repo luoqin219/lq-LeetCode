@@ -65,7 +65,7 @@ class Solution {
 
 
 
-### 56. Merge Intervals 
+### 56. Merge Intervals - Medium 
 
 Given a collection of intervals, merge all overlapping intervals.
 
@@ -110,3 +110,6 @@ class Solution {
 }
 ```
 
+O(NlogN)
+
+O(N)

@@ -38,6 +38,7 @@ class Solution {
     public String licenseKeyFormatting(String S, int K) {
         StringBuilder sb = new StringBuilder();
         int count = 0;
+        // start from the end because the start can only have one character
         for(int i = S.length() - 1; i >= 0 ; i--) {
             if(S.charAt(i) != '-') {
                 if(count == K) {
@@ -48,6 +49,7 @@ class Solution {
                 count++;
                 }
         }
+        // use reverse to have the normal sequence
         return sb.reverse().toString();
     }
 }
@@ -121,6 +123,8 @@ Runtime: 26 ms, faster than 97.81% of Java online submissions for 3Sum.
 
 Memory Usage: 45.9 MB, less than 94.70% of Java online submissions for 3Sum.
 
+**Complexity Analysis**
+
 Time complexity: O(n^2) (thanks to two-pointer scan) 		(Sort the array - O(nlogn))
 
 Space complexity: O(1)
@@ -142,7 +146,7 @@ Explanation: The longest increasing subsequence is [2,3,7,101], therefore the le
 **Note:**
 
 - There may be more than one LIS combination, it is only necessary for you to return the length.
-- Your algorithm should run in O(*n2*) complexity.
+- Your algorithm should run in O(*n^2*) complexity.
 
 **Follow up:** Could you improve it to O(*n* log *n*) time complexity?
 
@@ -151,7 +155,7 @@ Explanation: The longest increasing subsequence is [2,3,7,101], therefore the le
 #### O(nlog(n)) Algorithms using DP
 
 ```java
-// using Arrays
+// using Arrays binarySearch method
 public class Solution {
     public int lengthOfLIS(int[] nums) {            
         int[] dp = new int[nums.length];
@@ -1053,5 +1057,44 @@ public int[] numSmallerByFrequency(String[] queries, String[] words) {
         }
         return 0;
     }
+```
+
+
+
+### 278.  First Bad Version - Easy
+
+You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
+
+You are given an API `bool isBadVersion(version)` which will return whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+**Example:**
+
+```
+Given n = 5, and version = 4 is the first bad version.
+
+call isBadVersion(3) -> false
+call isBadVersion(5) -> true
+call isBadVersion(4) -> true
+
+Then 4 is the first bad version. 
+```
+
+```java
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int start = 1, end = n;
+        while (start < end) {
+            int mid = start + (end-start) / 2;
+            if (!isBadVersion(mid)) start = mid + 1;
+            else end = mid;            
+        }        
+     return start;
+    }
+}
 ```
 
