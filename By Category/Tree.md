@@ -437,3 +437,211 @@ This one is for fun. Instead of predefined choice we will pick randomly left or 
 - Space complexity: O(*N*). O(*N*) to keep the output, and O(log*N*) for the recursion stack.
 
 *<u>**It should be universally accepted to use `int mid = lo + (hi - lo) / 2;` for overflow protection, or that bit-shifting one**</u>*
+
+
+
+### 110. Balanced Binary Tree
+
+Given a binary tree, determine if it is height-balanced.
+
+For this problem, a height-balanced binary tree is defined as:
+
+> a binary tree in which the left and right subtrees of *every* node differ in height by no more than 1.
+
+ 
+
+**Example 1:**
+
+Given the following tree `[3,9,20,null,null,15,7]`:
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+Return true.
+
+**Example 2:**
+
+Given the following tree `[1,2,2,3,3,null,null,4,4]`:
+
+```
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+```
+
+Return false.
+
+![image-20200102141531600](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200102141531600.png)
+
+![pic](https://leetcode.com/problems/balanced-binary-tree/Figures/110/110-unbalanced-wheight-highlighted.png)
+
+> The balanced subtree definition hints at the fact that we should treat each subtree as a subproblem. The question is: in which order should we solve the subproblems?
+
+------
+
+#### Approach 1: Top-down recursion
+
+**Algorithm**
+
+![image-20200102141616350](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200102141616350.png)
+
+```
+isBalanced(root):
+    if (root == NULL):
+        return true
+    if (abs(height(root.left) - height(root.right)) > 1):
+        return false
+    else:
+        return isBalanced(root.left) && isBalanced(root.right)
+```
+
+<iframe src="https://leetcode.com/playground/BDAF9qQX/shared" frameborder="0" width="100%" height="463" name="BDAF9qQX" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Complexity Analysis**
+
+![image-20200101143517644](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200101143517644.png)
+
+![image-20200101143549402](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200101143549402.png)
+
+**Fun fact**: f*(*n*)=*f*(*n*−1)+*f*(*n−2)+1 is known as a [Fibonacci meanders](http://oeis.org/wiki/User:Peter_Luschny/FibonacciMeanders) sequence.
+
+
+
+------
+
+#### Approach 2: Bottom-up recursion
+
+**Intuition**
+
+In approach 1, we perform redundant calculations when computing height. In each call to height, we require that the subtree's heights also be computed. Therefore, when working top down we will compute the height of a subtree once for every parent. We can remove the redundancy by first recursing on the children of the current node and then using their computed height to determine whether the current node is balanced.
+
+**Algorithm**
+
+We will use the same height defined in the first approach. The bottom-up approach is a reverse of the logic of the top-down approach since we *first* check if the child subtrees are balanced *before* comparing their heights. The algorithm is as follows:
+
+> Check if the child subtrees are balanced. If they are, use their heights to determine if the current subtree is balanced as well as to calculate the current subtree's height.
+
+<iframe src="https://leetcode.com/playground/NpoCAWjW/shared" frameborder="0" width="100%" height="500" name="NpoCAWjW" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Complexity Analysis**
+
+- Time complexity : O(*n*)
+
+  For every subtree, we compute its height in constant time as well as compare the height of its children.
+
+- Space complexity : O(*n*). The recursion stack may go up to O(*n*) if the tree is unbalanced.
+
+
+
+### 669. Trim A Binary Search Tree - Easy
+
+Given a binary search tree and the lowest and highest boundaries as `L` and `R`, trim the tree so that all its elements lies in `[L, R]` (R >= L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.
+
+**Example 1:**
+
+```
+Input: 
+    1
+   / \
+  0   2
+
+  L = 1
+  R = 2
+
+Output: 
+    1
+      \
+       2
+```
+
+**Example 2:**
+
+```
+Input: 
+    3
+   / \
+  0   4
+   \
+    2
+   /
+  1
+
+  L = 1
+  R = 3
+
+Output: 
+      3
+     / 
+   2   
+  /
+ 1
+```
+
+#### Implementation - Recursion
+
+Given the property of a **binary search tree** (the value should be in accordance with inoder traversal), we can use recursion to solve this problem.
+
+```java
+class Solution {
+    public TreeNode trimBST(TreeNode root, int L, int R) {
+        if (root == null) return null;
+        if (root.val < L) return trimBST(root.right, L, R);
+        if (root.val > R) return trimBST(root.left, L , R);
+        
+        root.left = trimBST(root.left, L, R);
+        root.right = trimBST(root.right, L, R);
+        
+        return root;
+    }
+}
+```
+
+**Complexity Analysis**
+
+- Time Complexity: O*(*N*), where N* is the total number of nodes in the given tree. We visit each node at most once.
+- Space Complexity: O*(*N). Even though we don't explicitly use any additional memory, the call stack of our recursion could be as large as the number of nodes in the worst case.
+
+#### Approach 2 - Iteration
+
+```java
+class Solution {
+    public TreeNode trimBST(TreeNode root, int L, int R) {
+        if (root == null) return root;
+        //Find a valid root which is used to return.
+        while (root != null && (root.val < L || root.val > R)) {
+  			if (root.val < L) root = root.right;
+		    else if (root.val > R) root = root.left;
+		}
+        TreeNode dummy = root;
+        // Remove the invalid nodes from left subtree.
+        while (dummy != null) {
+            while (dummy.left != null && dummy.left.val < L) {
+                dummy.left = dummy.left.right; // If the left child is smaller than L, then we just keep the right subtree of it. 
+            }
+            dummy = dummy.left;
+        }
+        dummy = root;
+        // Remove the invalid nodes from right subtree
+        while (dummy != null) {
+            while (dummy.right != null && dummy.right.val > R) {
+                dummy.right = dummy.right.left; // If the right child is biggrt than R, then we just keep the left subtree of it. 
+            }
+            dummy = dummy.right;
+        }
+        return root;
+    }
+}
+```
+
+O(N): we visit all nodes once.
+
+O(N): in the worst case, we could use dummy node to indicate all nodes.
