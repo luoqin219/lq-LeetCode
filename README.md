@@ -3,10 +3,10 @@
 
 ### Problems By Category (Difficulty Level Marked Inside)
 
-- [Sort](C:\Users\73995\GitBook\lq-LeetCode\By Category\Sort.md)
-- [List](C:\Users\73995\GitBook\lq-LeetCode\By Category\List.md)
-- [Stack](Stack.md)
-- [Tree](Tree)
-- [Graph](Graph.md)
-- [Dynamic Programming](Dynamic Programming.md)
-- [Mixed](Mixed.md)
+- [Sort](By Category\Sort.md)
+- [List](By Category\List.md)
+- [Stack](By Category\Stack.md)
+- [Tree](By Category\Tree.md)
+- [Graph](By Category\Graph.md)
+- [Dynamic Programming](By Category\Dynamic Programming.md)
+- [Mixed](By Category\Mixed.md)
