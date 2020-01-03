@@ -9,4 +9,4 @@
 - [Tree](\ByCategory\Tree.md)
 - [Graph](\ByCategory\Graph.md)
 - [Dynamic Programming](ByCategory\DynamicProgramming.md)
-- [Mixed](\ByCategory\Mixed.md)
+- [Tree](\ByCategory\Tree.md)
