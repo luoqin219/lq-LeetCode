@@ -3,7 +3,7 @@
 
 ### Problems By Category (Difficulty Level Marked Inside)
 
-- [Sort](By Category\Sort.md)
+- [Sort](.By Category\Sort.md)
 - [List](By Category\List.md)
 - [Stack](By Category\Stack.md)
 - [Tree](By Category\Tree.md)
