@@ -3,8 +3,8 @@
 
 ### Problems By Category (Difficulty Level Marked Inside)
 
-- [Sort](Sort.md)
-- [List](List.md)
+- [Sort](C:\Users\73995\GitBook\lq-LeetCode\By Category\Sort.md)
+- [List](C:\Users\73995\GitBook\lq-LeetCode\By Category\List.md)
 - [Stack](Stack.md)
 - [Tree](Tree)
 - [Graph](Graph.md)
