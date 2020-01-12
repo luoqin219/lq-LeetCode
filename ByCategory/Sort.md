@@ -247,7 +247,6 @@ Let us not look at the implementation for this algorithm.
 <iframe src="https://leetcode.com/playground/7kw8gCgZ/shared" frameborder="0" width="100%" height="500" name="7kw8gCgZ" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
 
 
-
 **Complexity Analysis**
 
 - Time Complexity: O(NlogN).
@@ -299,8 +298,66 @@ Let us not look at the implementation for this algorithm.
 <iframe src="https://leetcode.com/playground/gbwyrqH7/shared" frameborder="0" width="100%" height="500" name="gbwyrqH7" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
 
 
-
 **Complexity Analysis**
 
 - Time Complexity: O*(*N*log*N) because all we are doing is sorting the two arrays for `start timings` and `end timings` individually and each of them would contain N elements considering there are N intervals.
 - Space Complexity: O*(*N) because we create two separate arrays of size N, one for recording the start times and one for the end times.
+
+
+
+### 937. Reorder Data in Log Files - Easy
+
+You have an array of `logs`. Each log is a space delimited string of words.
+
+For each log, the first word in each log is an alphanumeric *identifier*. Then, either:
+
+- Each word after the identifier will consist only of lowercase letters, or;
+- Each word after the identifier will consist only of digits.
+
+We will call these two varieties of logs *letter-logs* and *digit-logs*. It is guaranteed that each log has at least one word after its identifier.
+
+Reorder the logs so that all of the letter-logs come before any digit-log. The letter-logs are ordered lexicographically ignoring identifier, with the identifier used in case of ties. The digit-logs should be put in their original order.
+
+Return the final order of the logs.
+
+**Example 1:**
+
+```
+Input: logs = ["dig1 8 1 5 1","let1 art can","dig2 3 6","let2 own kit dig","let3 art zero"]
+Output: ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 3 6"]
+```
+
+**Constraints:**
+
+1. `0 <= logs.length <= 100`
+2. `3 <= logs[i].length <= 100`
+3. `logs[i]` is guaranteed to have an identifier, and a word after the identifier.
+
+
+
+#### Implementation - Custom Order
+
+```java
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        Arrays.sort(logs, (log1, log2) -> {
+            String[] split1 = log1.split(" ", 2);
+            String[] split2 = log2.split(" ", 2);
+            boolean isDigit1 = Character.isDigit(split1[1].charAt(0));
+            boolean isDigit2 = Character.isDigit(split2[1].charAt(0));
+            if (!isDigit1 && !isDigit2) {
+                int cmp = split1[1].compareTo(split2[1]);
+                if (cmp != 0) return cmp;
+                return split1[0].compareTo(split2[0]);
+            }
+            return isDigit1 ? (isDigit2 ? 0 : 1) : -1;
+        });
+        return logs;
+    }
+}
+```
+
+**Complexity Analysis**
+
+- Time Complexity: O*(AlogA)*, where A is the total content of `logs`.
+- Space Complexity: O*(A)*.

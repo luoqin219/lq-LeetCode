@@ -370,7 +370,6 @@ One could choose left middle element, or right middle one, and both choices will
 **Implementation**
 
 <iframe src="https://leetcode.com/playground/KDzigPDd/shared" frameborder="0" width="100%" height="412" name="KDzigPDd" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 - Time complexity: O(*N*) since we visit each node exactly once.
@@ -399,7 +398,6 @@ One could choose left middle element, or right middle one, and both choices will
 **Implementation**
 
 <iframe src="https://leetcode.com/playground/4iXwruvN/shared" frameborder="0" width="100%" height="429" name="4iXwruvN" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 - Time complexity: O(*N*) since we visit each node exactly once.
@@ -430,7 +428,6 @@ This one is for fun. Instead of predefined choice we will pick randomly left or 
 **Implementation**
 
 <iframe src="https://leetcode.com/playground/sKR7fp7k/shared" frameborder="0" width="100%" height="446" name="sKR7fp7k" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 - Time complexity: O(*N*) since we visit each node exactly once.
@@ -505,7 +502,6 @@ isBalanced(root):
 ```
 
 <iframe src="https://leetcode.com/playground/BDAF9qQX/shared" frameborder="0" width="100%" height="463" name="BDAF9qQX" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 ![image-20200101143517644](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200101143517644.png)
@@ -531,7 +527,6 @@ We will use the same height defined in the first approach. The bottom-up approac
 > Check if the child subtrees are balanced. If they are, use their heights to determine if the current subtree is balanced as well as to calculate the current subtree's height.
 
 <iframe src="https://leetcode.com/playground/NpoCAWjW/shared" frameborder="0" width="100%" height="500" name="NpoCAWjW" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 - Time complexity : O(*n*)
@@ -645,3 +640,127 @@ class Solution {
 O(N): we visit all nodes once.
 
 O(N): in the worst case, we could use dummy node to indicate all nodes.
+
+
+
+### 572. Subtree of Another Tree - Easy
+
+Given two non-empty binary trees **s** and **t**, check whether tree **t** has exactly the same structure and node values with a subtree of **s**. A subtree of **s** is a tree consists of a node in **s** and all of this node's descendants. The tree **s** could also be considered as a subtree of itself.
+
+**Example 1:**
+Given tree s:
+
+```
+     3
+    / \
+   4   5
+  / \
+ 1   2
+```
+
+Given tree t:
+
+```
+   4 
+  / \
+ 1   2
+```
+
+Return **true**, because t has the same structure and node values with a subtree of s.
+
+
+
+**Example 2:**
+Given tree s:
+
+```
+     3
+    / \
+   4   5
+  / \
+ 1   2
+    /
+   0
+```
+
+Given tree t:
+
+```
+   4
+  / \
+ 1   2
+```
+
+Return **false**.
+
+
+
+#### Implementation - Recursion
+
+```java
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if (s != null && t == null) return true;
+        if (s == null && t != null) return false;
+        return equals(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);
+    }
+    
+    public boolean equals(TreeNode s, TreeNode t) {
+        if (s == null && t == null) return true;
+        if (s == null || t == null) return false;
+        return s.val == t.val && equals(s.left, t.left) && equals(s.right, t.right);
+    }
+}
+```
+
+- Time complexity : O*(*m*∗*n) in worst case(skewed tree). In the worst case, the equals method is called for each node. The equals method will be O(m) w/ m being the size of the smaller tree. You are calling this n times w/ n being the size of the larger tree, so O(m)*O(n) = O(m*n)
+- Space complexity : O*(*n*) in worst case. The depth of the recursion tree can go upto n*. n refers to the number of nodes in s.
+
+#### Approach 2 - Using Preorder Traversal
+
+**Algorithm**
+
+![image-20200111225219427](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200111225219427.png)
+
+![Preorder_null](https://leetcode.com/problems/subtree-of-another-tree/Figures/572_Subtree_1.PNG)
+
+![Preorder_lnull_rnull](https://leetcode.com/problems/subtree-of-another-tree/Figures/572_Subtree_2.PNG)
+
+<iframe src="https://leetcode.com/playground/cagXWqSv/shared" frameborder="0" name="cagXWqSv" width="100%" height="513" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Complexity Analysis**
+
+![image-20200111225826600](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20200111225826600.png)
+
+String Concatenation is O(n^2)
+
+**Approach 2 Follow-up: Optimized Preorder Traversal Solution**
+
+```java
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        return serialize(s).contains(serialize(t)); // Java use naive solution that cause O(M*N). Replace with KMP algorithm to ensure O(M+N)
+    }
+
+    private String serialize(TreeNode root) {
+        StringBuilder builder = new StringBuilder();
+        serialize(root, builder);
+        return builder.toString();
+    }
+    
+    private void serialize(TreeNode root, StringBuilder builder) {
+        if (root == null) {
+            builder.append(",#");
+        } else {
+            builder.append("," + root.val);
+            serialize(root.left, builder);
+            serialize(root.right, builder);
+        }
+    }
+}
+```
+
+Complexity:
+
+- Time: O(M+N), M is the number of nodes of tree `s`, N is the number of nodes of tree `t`
+- Space: O(M+N)

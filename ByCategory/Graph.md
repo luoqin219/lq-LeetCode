@@ -93,7 +93,6 @@ class Solution {
 Linear scan the 2d grid map, if a node contains a '1', then it is a root node that triggers a Breadth First Search. Put it into a queue and set its value as '0' to mark as visited node. Iteratively search the neighbors of enqueued nodes until the queue becomes empty.
 
 <iframe src="https://leetcode.com/playground/A72rWpdb/shared" frameborder="0" width="100%" height="500" name="A72rWpdb" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 - Time complexity : O*(*M*×*N*) where M*M* is the number of rows and N*N* is the number of columns.
@@ -110,9 +109,117 @@ Traverse the 2d grid map and union adjacent lands horizontally or vertically, at
 For details regarding to Union Find, you can refer to this [article](https://leetcode.com/articles/redundant-connection/).
 
 <iframe src="https://leetcode.com/playground/WxXFcSGH/shared" frameborder="0" width="100%" height="500" name="WxXFcSGH" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
 **Complexity Analysis**
 
 - Time complexity : O*(*M*×*N*) where M* is the number of rows and *N* is the number of columns. Note that Union operation takes essentially constant time[[1\]](https://leetcode.com/problems/number-of-islands/solution/#fn1) when UnionFind is implemented with both path compression and union by rank.
 - Space complexity : O*(*M*×*N) as required by UnionFind data structure.
+
+
+
+### 348. Design Tic-Tac-Toe - Medium
+
+Design a Tic-tac-toe game that is played between two players on a *n* x *n* grid.
+
+You may assume the following rules:
+
+1. A move is guaranteed to be valid and is placed on an empty block.
+2. Once a winning condition is reached, no more moves is allowed.
+3. A player who succeeds in placing *n* of their marks in a horizontal, vertical, or diagonal row wins the game.
+
+**Example:**
+
+```
+Given n = 3, assume that player 1 is "X" and player 2 is "O" in the board.
+
+TicTacToe toe = new TicTacToe(3);
+
+toe.move(0, 0, 1); -> Returns 0 (no one wins)
+|X| | |
+| | | |    // Player 1 makes a move at (0, 0).
+| | | |
+
+toe.move(0, 2, 2); -> Returns 0 (no one wins)
+|X| |O|
+| | | |    // Player 2 makes a move at (0, 2).
+| | | |
+
+toe.move(2, 2, 1); -> Returns 0 (no one wins)
+|X| |O|
+| | | |    // Player 1 makes a move at (2, 2).
+| | |X|
+
+toe.move(1, 1, 2); -> Returns 0 (no one wins)
+|X| |O|
+| |O| |    // Player 2 makes a move at (1, 1).
+| | |X|
+
+toe.move(2, 0, 1); -> Returns 0 (no one wins)
+|X| |O|
+| |O| |    // Player 1 makes a move at (2, 0).
+|X| |X|
+
+toe.move(1, 0, 2); -> Returns 0 (no one wins)
+|X| |O|
+|O|O| |    // Player 2 makes a move at (1, 0).
+|X| |X|
+
+toe.move(2, 1, 1); -> Returns 1 (player 1 wins)
+|X| |O|
+|O|O| |    // Player 1 makes a move at (2, 1).
+|X|X|X|
+```
+
+**Follow up:**
+Could you do better than O(*n*2) per `move()` operation?
+
+#### Implementation - Two Arrays
+
+```java
+class TicTacToe {
+
+    int rows[];
+    int cols[];
+    int diag1 = 0;
+    int diag2 = 0;
+    int n = 0;
+    
+    /** Initialize your data structure here. */
+    public TicTacToe(int n) {
+        this.n = n;
+        rows = new int[n];
+        cols = new int[n];
+    }
+    
+    /** Player {player} makes a move at ({row}, {col}).
+        @param row The row of the board.
+        @param col The column of the board.
+        @param player The player, can be either 1 or 2.
+        @return The current winning condition, can be either:
+                0: No one wins.
+                1: Player 1 wins.
+                2: Player 2 wins. */
+    public int move(int row, int col, int player) {
+        int winner = 0;       
+        int value = player == 1 ? 1: -1;
+        
+        rows[row] += value;
+        cols[col] += value;
+        
+        if (row == col) diag1 += value;
+        if (row == n - col - 1) diag2 += value;
+        
+        if ((winner = checkWinner(rows[row])) != 0) return winner;
+        if ((winner = checkWinner(cols[col])) != 0) return winner;                
+        if ((winner = checkWinner(diag1)) != 0) return winner;
+        
+        return checkWinner(diag2);
+    }
+    
+    int checkWinner(int sum) {
+        if (sum == n) return 1;
+        if (sum == -n) return 2;
+        return 0;
+    }
+}
+```
 
