@@ -190,3 +190,55 @@ class Solution {
 
 ![image-20191111213933557](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20191111213933557.png)
 
+
+
+### 70. Climbing Stairs - Easy
+
+You are climbing a stair case. It takes *n* steps to reach to the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+**Example 1:**
+
+```
+Input: 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+```
+
+**Example 2:**
+
+```
+Input: 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+```
+
+ 
+
+**Constraints:**
+
+- `1 <= n <= 45`
+
+
+
+#### Implementation
+
+**Algorithm**
+
+As we can see this problem can be broken into subproblems, and it contains the optimal substructure property i.e. its optimal solution can be constructed efficiently from optimal solutions of its subproblems, we can use dynamic programming to solve this problem.
+
+![image-20200628233818428](/Users/qinluo/Library/Application Support/typora-user-images/image-20200628233818428.png)
+
+<iframe src="https://leetcode.com/playground/bJT3YiVD/shared" frameborder="0" width="100%" height="293" name="bJT3YiVD" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Complexity Analysis**
+
+- Time complexity : O*(*n*). Single loop upto n*.
+- Space complexity : O*(*n*). dp* array of size n* is used.
+
