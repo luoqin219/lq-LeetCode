@@ -343,3 +343,60 @@ class Solution {
 - Time Complexity : O(|S| + |T|) where |S| and |T| represent the lengths of strings S*S* and T*T*. The complexity is same as the previous approach. But in certain cases where |filtered\_S| <<< |S|, the complexity would reduce because the number of iterations would be 2*|filtered\_S| + |S| + |T|.
 - Space Complexity : O(|S| + |T|).
 
+
+
+### 159.  Substring with At Most Two Distinct Characters - Medium
+
+Given a string **s**, find the length of the longest substring **t** that contains **at most** 2 distinct characters.
+
+**Example 1:**
+
+```
+Input: "eceba"
+Output: 3
+Explanation: t is "ece" which its length is 3.
+```
+
+**Example 2:**
+
+```
+Input: "ccaabbb"
+Output: 5
+Explanation: t is "aabbb" which its length is 5.
+```
+
+#### My Implementation
+
+```java
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        int max = 0, left = 0, right = 0;
+        HashMap<Character, Integer> chars = new HashMap<>(); // store the char and its occurence
+        while (left < s.length() && right < s.length()) {
+            chars.put(s.charAt(right), chars.getOrDefault(s.charAt(right), 0) + 1);
+            if (chars.size() > 2) {
+                if (chars.get(s.charAt(left)) == 1) chars.remove(s.charAt(left));
+                else chars.put(s.charAt(left), chars.get(s.charAt(left)) - 1);
+                left++; // go to next substring
+            }
+            max = Math.max(max, right-left+1); // update the max length
+            right++; // extend the substring
+        }
+        return max;
+    }
+}
+```
+
+**Complexity Analysis**
+
+- Time complexity : O(*N*) where `N` is a number of characters in the input string.
+- Space complexity : O(1) since additional space is used only for a hashmap with at most `3` elements.
+
+##### Improvement
+
+Check corner case first
+
+```java
+if (s.length() < 3) return s.length();
+```
+
