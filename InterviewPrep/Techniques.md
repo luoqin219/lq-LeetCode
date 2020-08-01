@@ -50,3 +50,4 @@ Write beautiful codes:
 3. Hot spots. You've coded long enough to know what things are likely to cause problems. Base cases in recursive code. Integer division. Null nodes in binary trees. The start and end of iteration through a linked list. Double check that stuff.
 4. Small test cases. Don't use that nice, big 8-element array from the algorithm part. Instead, use a 3 or 4 element array.
 5. Special cases. Test your code against null or single element values, the extreme cases, and other special cases. 
+
