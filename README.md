@@ -20,4 +20,5 @@ This repo is used to record leetcode excercises and lessons learnt during job se
 ## Tech Interviews Prep
 
 - [Techniques](/InterviewPrep/Techniques.md)
+- [Sorting Algorithms](/InterviewPrep/Sorting.md)
 
