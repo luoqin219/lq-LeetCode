@@ -10,7 +10,7 @@
 | Selection Sort  |          O(n^2)           |         O(n^2)          |         O(n^2)         |       O(1)       |    No     |
 |   Quick Sort    |         O(nlogn)          |         O(n^2)          |        O(nlogn)        |     O(nlogn)     |    No     |
 |   Merge Sort    |         O(nlogn)          |        O(nlogn)         |        O(nlogn)        |       O(n)       |    Yes    |
-|                 |                           |                         |                        |                  |           |
+| Insertion Sort  |          O(n^2)           |         O(n^2)          |          O(1)          |       O(1)       |    Yes    |
 |                 |                           |                         |                        |                  |           |
 |                 |                           |                         |                        |                  |           |
 |                 |                           |                         |                        |                  |           |
@@ -28,10 +28,7 @@
   }
   ```
 
-### Navigation
 
-- [Bubble Sort](#bubble-sort)
-- [Selection Sort](#selection-sort)
 
 ## 1. Bubble Sort
 
@@ -102,7 +99,7 @@ public void static selectionSort(int[] arr) {
 
 
 
-## 2. Quick Sort
+## 3. Quick Sort
 
 ### Description
 
@@ -138,6 +135,98 @@ public void static partition(int[] arr, int start, int end) {
     }
     swap(arr, pivot, count);
     return count;
+}
+```
+
+
+
+## 4. Merge Sort
+
+### Description
+
+Merge Sort uses recursion to solve the problem of sorting efficiently, and in particular it uses a Divide and Conquer approach.
+
+### Algorithm
+
+1. Separate the n-length input into two 2/n-length sublists;
+2. Sort these two sublists using merge sort separately;
+3. Merge these two sublists to be a whole sorted list.
+
+### Implementation in Java
+
+```java
+public static void mergeSort(int[] arr, int left, int right) {
+    if (left >= right) return;
+    int mid = left + (right-left)/2; // avoid stackOverFlow
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid+1, right);
+    merge(arr, left, mid, right);
+}
+
+public static void merge(int[] arr, int left, int mid, int right) {
+    int lenLeft = mid - left + 1;
+    int lenRight = right - mid;
+    
+    // copy sorted sub-arrays to temporary arrays
+    int[] leftArr = new int[lenLeft];
+    int[] rightArr = new int[lenRight];
+    System.arraycopy(arr, 0, leftArr, 0, lenLeft);
+    System.arraycopy(arr, mid+1, rightArr, 0, lenRight);
+    
+    // cursors for left and right
+    int leftIndex = 0, rightIndex = 0;
+    
+    // sort left and right back into one array
+    for (int i = left; i < right+1; i++) {
+        if (leftIndex < lenLeft && rightIndex < lenRight) { // there are still elements uncopied from both arrays
+            if (leftArr[leftIndex] < rightArr[rightIndex]) {
+                arr[i] = leftArr[leftIndex];
+                leftIndex++;
+            } else {
+                arr[i] = rightArr[rightIndex];
+                rightIndex++;
+            }
+        } else if (leftIndex < lenLeft) { // only left one has uncopied elements
+            arr[i] = leftArr[leftIndex];
+            leftIndex++;
+        } else if (rightIndex < lenRight) { // only right one has uncopied elements
+            arr[i] = rightArr[rightIndex];
+            rightIndex++;
+        }
+    }
+}
+```
+
+
+
+## 5. Insertion Sort
+
+### Description
+
+The idea behind Insertion Sort is dividing the array into the sorted and unsorted subarrays. For unsorted elements, scan the sorted ones from its end to its start to find a position for the element to be inserted.
+
+### Algorithm
+
+1. Start from the first element which we can regard it to be sorted;
+2. Pick next element, scan the sorted list from end to start;
+3. If the element in the sorted list is larger than new unsorted one, move this element to next position;
+4. Repeat step 3 until we find the element in the sorted list that is smaller than or equal to the new unsorted one;
+5. Insert new element behind that element;
+6. Repeat step 2-5.
+
+### Implementation in Java
+
+```java
+public static void insertionSort(int[] arr) {
+    for (int i = 1; i < arr.length; i++) {
+        int curr = arr[i];
+        int j = i - 1;
+        while (j >= 0 && curr < arr[j]) {
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = curr;
+    }
 }
 ```
 
