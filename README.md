@@ -17,7 +17,7 @@ The Tech Interviews Prep part writes down notes from the book《Cracking the Cod
 - [Heap](/ByCategory/Heap.md)
 - [Sort](/ByCategory/Sort.md)
 - [Math](/ByCategory/Math.md)
-- [Design Data Structure](/ByCategory/DesignDataStructure.md)
+- [Design Data Structure](/ByCategory/DataStructureDesign.md)
 - [Divide and Conquer](/ByCategory/DivideAndConquer.md)
 - [Dynamic Programming](/ByCategory/DynamicProgramming.md)
 - [Sliding Window](/ByCategory/SlidingWindow.md)
