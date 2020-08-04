@@ -4,17 +4,19 @@
 
 ### Big O Analysis (the base of log here is 2)
 
-| Sort Algorithim | Time Complexity (Average) | Time Complexity (Worst) | Time Complexity (Best) | Space Complexity | Stability |
-| :-------------: | :-----------------------: | :---------------------: | :--------------------: | :--------------: | :-------: |
-|   Bubbel Sort   |          O(n^2)           |         O(n^2)          |          O(n)          |       O(1)       |    Yes    |
-| Selection Sort  |          O(n^2)           |         O(n^2)          |         O(n^2)         |       O(1)       |    No     |
-|   Quick Sort    |         O(nlogn)          |         O(n^2)          |        O(nlogn)        |     O(nlogn)     |    No     |
-|   Merge Sort    |         O(nlogn)          |        O(nlogn)         |        O(nlogn)        |       O(n)       |    Yes    |
-| Insertion Sort  |          O(n^2)           |         O(n^2)          |          O(1)          |       O(1)       |    Yes    |
-|                 |                           |                         |                        |                  |           |
-|                 |                           |                         |                        |                  |           |
-|                 |                           |                         |                        |                  |           |
-|                 |                           |                         |                        |                  |           |
+| Sort Algorithim | Time Complexity (Average) | Time Complexity (Worst) | Time Complexity (Best) | Space Complexity | Stable* |
+| :-------------: | :-----------------------: | :---------------------: | :--------------------: | :--------------: | :-----: |
+|   Bubbel Sort   |          O(n^2)           |         O(n^2)          |          O(n)          |       O(1)       |   Yes   |
+| Selection Sort  |          O(n^2)           |         O(n^2)          |         O(n^2)         |       O(1)       |   No    |
+|   Quick Sort    |         O(nlogn)          |         O(n^2)          |        O(nlogn)        |     O(nlogn)     |   No    |
+|   Merge Sort    |         O(nlogn)          |        O(nlogn)         |        O(nlogn)        |       O(n)       |   Yes   |
+| Insertion Sort  |          O(n^2)           |         O(n^2)          |          O(1)          |       O(1)       |   Yes   |
+|                 |                           |                         |                        |                  |         |
+|                 |                           |                         |                        |                  |         |
+|                 |                           |                         |                        |                  |         |
+|                 |                           |                         |                        |                  |         |
+
+*Stable: If element a is before b and a equals to b before sorting is processed, stable algorithm will keep a before b after being processed. Otherwise, the algorithm is not stable.
 
 ### Helper Method Defined
 
