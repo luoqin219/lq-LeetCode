@@ -41,7 +41,7 @@ This is a classical question from textbook, which is intended to test one's know
 > There are two key questions that one should address, in order to implement the HashSet data structure, namely ***hash function*** and ***collision handling***.
 
 - ***hash function***: the goal of the hash function is to assign an address to store a given value. Ideally, each unique value should have an unique hash value.
-- ***collision handling***: since the nature of a hash function is to map a value from a space `A` into a corresponding value in a ***smaller\*** space `B`, it could happen that multiple values from space `A` might be mapped to the *same* value in space `B`. This is what we call ***collision\***. Therefore, it is indispensable for us to have a strategy to handle the collision.
+- ***collision handling***: since the nature of a hash function is to map a value from a space `A` into a corresponding value in a **smaller** space `B`, it could happen that multiple values from space `A` might be mapped to the *same* value in space `B`. This is what we call **collision**. Therefore, it is indispensable for us to have a strategy to handle the collision.
 
 Overall, there are several strategy to resolve the collisions:
 
@@ -57,15 +57,15 @@ In this article, we focus on the strategy of ***separate chaining***. Here is ho
 
 #### Approach 1: LinkedList as Bucket
 
-The common choice of hash function is the `modulo` operator, *i.e.* \text{hash} = \text{value} \mod \text{base}hash=valuemodbase. Here, the \text{base}base of modulo operation would determine the number of buckets that we would have at the end in the HashSet.
+The common choice of hash function is the `modulo` operator, *i.e.* hash = value mod base. Here, the base of modulo operation would determine the number of buckets that we would have at the end in the HashSet.
 
-Theoretically, the more buckets we have (hence the larger the space would be), the less likely that we would have *collisions*. The choice of \text{base}base is a tradeoff between the space and the collision.
+Theoretically, the more buckets we have (hence the larger the space would be), the less likely that we would have *collisions*. The choice of base is a tradeoff between the space and the collision.
 
 In addition, it is generally advisable to use a prime number as the base of modulo, *e.g.* 769769, in order to reduce the potential collisions.
 
 ![pic](https://leetcode.com/problems/design-hashset/Figures/705/705_linked_list.png)
 
-As to the design of `bucket`, again there are several options. One could simply use another `Array` as bucket to store all the values. However, one drawback with the Array data structure is that it would take \mathcal{O}(N)O(*N*) time complexity to remove or insert an element, rather than the desired \mathcal{O}(1)O(1).
+As to the design of `bucket`, again there are several options. One could simply use another `Array` as bucket to store all the values. However, one drawback with the Array data structure is that it would take O(*N*) time complexity to remove or insert an element, rather than the desired O(1).
 
 Since for any update operation, we would need to scan the entire *bucket* first to avoid any duplicate, a better choice for the implementation of *bucket* would be the ***LinkedList***, which has a constant time complexity for the *insertion* as well as *deletion*, once we locate the position to update.
 
@@ -335,4 +335,188 @@ Sometimes, it might be more desirable to have a **dynamic space** that goes with
 The increase of address space could potentially **reduce** the collisions, therefore improve the overall performance of HashSet. However, one should also take into account the cost of **rehashing** and redistributing the existing values.
 
 In another scenario, one could adopt the **2-choice hashing** as we mentioned at the beginning, which could help the values to be more ***evenly*** distributed in the address space.
+
+
+
+### 211. Add and Search Word - Data structure design - Medium
+
+Design a data structure that supports the following two operations:
+
+```
+void addWord(word)
+bool search(word)
+```
+
+search(word) can search a literal word or a regular expression string containing only letters `a-z` or `.`. A `.` means it can represent any one letter.
+
+**Example:**
+
+```
+addWord("bad")
+addWord("dad")
+addWord("mad")
+search("pad") -> false
+search("bad") -> true
+search(".ad") -> true
+search("b..") -> true
+```
+
+**Note:**
+You may assume that all words are consist of lowercase letters `a-z`.
+
+#### Approach 1: HashMap
+
+Map words to their length.
+
+#### Implementation
+
+```java
+public class WordDictionary {
+    Map<Integer, List<String>> mp = new HashMap<Integer, List<String>>();
+    
+    public void addWord(String word) {
+        int idx = word.length();
+        if (!mp.containsKey(idx)) {
+            List<String> list = new ArrayList<String>();
+            list.add(word);
+            mp.put(idx,list);
+        } else {
+            mp.get(idx).add(word);
+        }
+    }   
+
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        int idx = word.length();
+        if (!mp.containsKey(idx)) {
+            return false;
+        }
+        List<String> list = mp.get(idx);
+    
+        if (iswrds(word)) {
+            return list.contains(word);
+        }
+    
+        for (String s: list) {
+            if (same(s,word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // helper methods
+    boolean iswrds(String s) {
+        for (int e = 0 ; e < s.length(); e++) {
+            if (!Character.isLetter(s.charAt(e))) {
+                return false;
+            }
+        }
+    	return true;
+    }
+    
+    boolean same(String s, String b) {
+        if (s.length() != b.length()) {
+        	return false;
+        }
+
+        for (int e = 0; e < s.length(); e++) {
+            if (b.charAt(e)!='.' && s.charAt(e)!= b.charAt(e)) {
+                return false;
+            }
+        }
+    	return true;
+    }
+}
+```
+
+**Complexity Analysis**
+
+O(*M*⋅*N*) time complexity for the search, where *M* is a length of the word to find, and *N* is the number of words. Although this solution is not efficient for the most important practical use cases.
+
+#### Approach 2: Trie
+
+**Introduction to Trie**
+
+It could be pronounced in two different ways: as "tree" or "try". Trie which is also called a digital tree or a prefix tree is a kind of search ordered tree data structure mostly used for the efficient dynamic add/search operations with the strings.
+
+Trie is widely used in real life: autocomplete search, spell checker, T9 predictive text, [IP routing (longest prefix matching)](https://www.researchgate.net/figure/An-example-routing-table-and-the-corresponding-binary-trie-built-from-it_fig3_4236637), [some GCC containers](https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/trie_based_containers.html).
+
+Here is how it looks like
+
+![fig](https://leetcode.com/problems/add-and-search-word-data-structure-design/Figures/211/trie.png)
+
+*Figure 1. Data structure trie.*
+
+#### Implementation
+
+```java
+class TrieNode {
+    Map<Character, TrieNode> children = new HashMap();
+    boolean word = false;
+    public TrieNode() {}
+}
+
+class WordDictionary {
+    TrieNode trie;
+
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        trie = new TrieNode();
+    }
+    
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        TrieNode node = trie;
+        
+        for (char ch : word.toCharArray()) {
+            if (!node.children.containsKey(ch)) {
+                node.children.put(ch, new TrieNode());
+            }
+            node = node.children.get(ch);
+        }
+        node.word = true;
+    }
+    
+    /** Returns if the word is in the node. */
+    public boolean searchInNode(String word, TrieNode node) {
+        for (int i = 0; i < word.length(); ++i) {
+            char ch = word.charAt(i);
+            if (!node.children.containsKey(ch)) {
+                // if the current character is '.'
+                // check all possible nodes at this level
+                if (ch == '.') {
+                    for (char x : node.children.keySet()) {
+                        TrieNode child = node.children.get(x);
+                        if (searchInNode(word.substring(i + 1), child)) {
+                            return true;    
+                        }    
+                    }   
+                }
+                // if no nodes lead to answer
+                // or the current character != '.'
+                return false;    
+            } else {
+                // if the character is found
+                // go down to the next level in trie
+                node = node.children.get(ch); 
+            }   
+        }      
+        return node.word;
+    }
+
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        return searchInNode(word, trie);
+    }
+}
+```
+
+**Complexity Analysis for add**
+
+![image-20200805120915234](/Users/qinluo/Library/Application Support/typora-user-images/image-20200805120915234.png)
+
+**Complexity Analysis for search**
+
+![image-20200805120842464](/Users/qinluo/Library/Application Support/typora-user-images/image-20200805120842464.png)
 
