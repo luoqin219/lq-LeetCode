@@ -1,5 +1,159 @@
 # Bit Manipulation
 
+### 67. Add Binary
+
+Given two binary strings, return their sum (also a binary string).
+
+The input strings are both **non-empty** and contains only characters `1` or `0`.
+
+**Example 1:**
+
+```
+Input: a = "11", b = "1"
+Output: "100"
+```
+
+**Example 2:**
+
+```
+Input: a = "1010", b = "1011"
+Output: "10101"
+```
+
+**Constraints:**
+
+- Each string consists only of `'0'` or `'1'` characters.
+- `1 <= a.length, b.length <= 10^4`
+- Each string is either `"0"` or doesn't contain any leading zero.
+
+#### Approach 1: Use Built-in Method
+
+**Algorithm**
+
+- Convert a and b into integers.
+- Compute the sum.
+- Convert the sum back into binary form.
+
+```java
+class Solution {
+  public String addBinary(String a, String b) {
+    return Integer.toBinaryString(Integer.parseInt(a, 2) + Integer.parseInt(b, 2));
+  }
+}
+```
+
+**Complexity Analysis**
+
+Time: O(N+M)
+
+*Drawbacks*:
+
+1.  In Java this approach is limited by the length of the input strings a and b. Once the string is long enough, the result of conversion into integers will not fit into Integer, Long or BigInteger:
+   - 33 1-bits - and b doesn't fit into Integer.
+   - 65 1-bits - and b doesn't fit into Long.
+   - [500000001](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html) 1-bits - and b doesn't fit into BigInteger.
+2.  This method has quite low performance in the case of large input numbers.
+
+#### Approach 2: Bit -by-bit Computation
+
+**Algorithm**
+
+That's a good old classical algorithm, and there is no conversion from binary string to decimal and back here. Let's consider the numbers bit by bit starting from the lowest one and compute the carry this bit will add.
+
+Start from carry = 0. If number a has 1-bit in this lowest bit, add 1 to the carry. The same for number b: if number b has 1-bit in the lowest bit, add 1 to the carry. At this point the carry for the lowest bit could be equal to (00)_2(00)2, (01)_2(01)2, or (10)_2(10)2.
+
+Now append the lowest bit of the carry to the answer, and move the highest bit of the carry to the next order bit.
+
+Repeat the same steps again, and again, till all bits in a and b are used up. If there is still nonzero carry to add, add it. Now reverse the answer string and the job is done.
+
+#### Implementation
+
+```java
+class Solution {
+  public String addBinary(String a, String b) {
+    int n = a.length(), m = b.length();
+    if (n < m) return addBinary(b, a);
+    int L = Math.max(n, m);
+
+    StringBuilder sb = new StringBuilder();
+    int carry = 0, j = m - 1;
+    for(int i = L - 1; i > -1; i--) {
+      if (a.charAt(i) == '1') carry++;
+      if (j > -1 && b.charAt(j--) == '1') carry++;
+
+      if (carry % 2 == 1) sb.append('1');
+      else sb.append('0');
+
+      carry /= 2;
+    }
+    if (carry == 1) sb.append('1');
+    sb.reverse();
+
+    return sb.toString();
+  }
+}
+```
+
+**Complexity Analysis**
+
+- Time complexity: O(max(*N*,*M*)), where N and M are lengths of the input strings a and b.
+- Space complexity: O(max(*N*,*M*)) to keep the answer.
+
+#### Apporach 3: Bit Manipulation
+
+When interviewer provides you two numbers and asks to sum them up without using addition operation, we have to use bit manipulation.
+
+Here XOR is a key as well, because it's a sum of two binaries without taking carry into account.
+
+![fig](https://leetcode.com/problems/add-binary/Figures/67/xor4.png)
+
+To find current carry is quite easy as well, it's AND of two input numbers, shifted one bit to the left.
+
+![fig](https://leetcode.com/problems/add-binary/Figures/67/carry2.png)
+
+Now the problem is reduced: one has to find the sum of answer without carry and carry. It's the same problem - to sum two numbers, and hence one could solve it in **a loop with the condition statement "while carry is not equal to zero"**.
+
+**Algorithm**
+
+- Convert a and b into integers x and y, x will be used to keep an answer, and y for the carry.
+- While carry is nonzero: `y != 0`:
+  - Current answer without carry is XOR of x and y: `answer = x^y`.
+  - Current carry is left-shifted AND of x and y: `carry = (x & y) << 1`.
+  - Job is done, prepare the next loop: `x = answer`, `y = carry`.
+- Return x in the binary form.
+
+#### Implementation
+
+```java
+import java.math.BigInteger;
+class Solution {
+  public String addBinary(String a, String b) {
+    BigInteger x = new BigInteger(a, 2);
+    BigInteger y = new BigInteger(b, 2);
+    BigInteger zero = new BigInteger("0", 2);
+    BigInteger carry, answer;
+    while (y.compareTo(zero) != 0) {
+      answer = x.xor(y);
+      carry = x.and(y).shiftLeft(1);
+      x = answer;
+      y = carry;
+    }
+    return x.toString(2);
+  }
+}
+```
+
+**Performance Discussion**
+
+Here we deal with input numbers which are greater than 2^{100}2100. That forces to use slow [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html) in Java, and hence the performance gain will be present for the Python solution only. Provided here Java solution could make its best with Integers or Longs, but not with BigIntegers.
+
+**Complexity Analysis**
+
+- Time complexity : \mathcal{O}(N + M)O(*N*+*M*), where N*N* and M*M* are lengths of the input strings a and b.
+- Space complexity : \mathcal{O}(\max(N, M))O(max(*N*,*M*)) to keep the answer.
+
+
+
 ### 421. Maximum XOR of Two Numbers in an Array - Medium
 
 Given a **non-empty** array of numbers, a0, a1, a2, … , an-1, where 0 ≤ ai < 231.
