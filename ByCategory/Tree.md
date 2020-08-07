@@ -764,3 +764,269 @@ Complexity:
 
 - Time: O(M+N), M is the number of nodes of tree `s`, N is the number of nodes of tree `t`
 - Space: O(M+N)
+
+
+
+
+
+### 987. Vertical Order Traversal of a Binary Tree - Medium (?)
+
+Given a binary tree, return the *vertical order* traversal of its nodes values.
+
+For each node at position `(X, Y)`, its left and right children respectively will be at positions `(X-1, Y-1)` and `(X+1, Y-1)`.
+
+Running a vertical line from `X = -infinity` to `X = +infinity`, whenever the vertical line touches some nodes, we report the values of the nodes in order from top to bottom (decreasing `Y` coordinates).
+
+If two nodes have the same position, then the value of the node that is reported first is the value that is smaller.
+
+Return an list of non-empty reports in order of `X` coordinate. Every report will have a list of values of nodes.
+
+ 
+
+**Example 1:**
+
+![img](https://assets.leetcode.com/uploads/2019/01/31/1236_example_1.PNG)
+
+```
+Input: [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Explanation: 
+Without loss of generality, we can assume the root node is at position (0, 0):
+Then, the node with value 9 occurs at position (-1, -1);
+The nodes with values 3 and 15 occur at positions (0, 0) and (0, -2);
+The node with value 20 occurs at position (1, -1);
+The node with value 7 occurs at position (2, -2).
+```
+
+**Example 2:**
+
+**![img](https://assets.leetcode.com/uploads/2019/01/31/tree2.png)**
+
+```
+Input: [1,2,3,4,5,6,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation: 
+The node with value 5 and the node with value 6 have the same position according to the given scheme.
+However, in the report "[1,5,6]", the node value of 5 comes first since 5 is smaller than 6.
+```
+
+ 
+
+**Note:**
+
+1. The tree will have between 1 and `1000` nodes.
+2. Each node's value will be between `0` and `1000`.
+
+#### Key Points
+
+In this problem, we are asked to return the **vertical** order of a binary tree, which implies three sub-orders (denoted as `<column, row, value>`) as follows:
+
+- **column-wise order**
+
+  First, we look at a binary tree *horizontally*. Each node would be aligned to a specific `column`, based on its relative *offset* to the root node of the tree.
+
+  Let us assume that the root node has a column index of `0`, then its left child node would have a column index of `-1`, and its right child node would have a column index of `+1`, and so on.
+
+- **row-wise order**
+
+  Secondly, we look at the binary tree *vertically*. Each node would be assigned to a specific `row`, based on its *level* (*i.e.* the vertical distance to the root node).
+
+  Let us assume that the root node has a row index of `0`, then both its child nodes would have the row index of `1`. Note that the convention we adopt here is slightly different from the one in the problem description where the row index of a parent node is larger than the one of its child nodes. This, though, would not jeopardize our solution. On the contrary, it would help us to simplify the solution, as one will see later.
+
+- **value-wise order**
+
+  Finally, given the definitions of the above two sub-orders, there could be a case where two different nodes have the same `<column, row>` index. As a result, to resolve the draw situation, as stated in the problem description, the node that has a smaller `value` should come first.
+
+> Given the above definitions, we can now formulate the problem as a task to **sort** the nodes based on the 3-dimensional coordinates (*i.e.* `<column, row, value>`) that we defined above.
+>
+> 
+
+#### Approach 1: BFS/DFS with Global Sorting
+
+The idea to solve the problem would be as intuitive as **building** a list where each element in the list corresponds to the 3-dimensional coordinates of each node in the tree, and then **sorting** the list based on the coordinates.
+
+**Algorithm**
+
+Based on the above intuition, we could implement the solution in 3 simple steps:
+
+- **Step 1)**: we traverse the input tree either by BFS or DFS, in order to generate a list that contains the 3-dimensional coordinates (*i.e.* `<column, row, value>`) of each node.
+  - Note that, we assign a higher `row` index value to a node's child node. This convention is at odds with the denotation given in the problem description. This is done *intentionally*, in order to keep the ordering of all coordinates consistent, *i.e.* a lower value in any specific coordinate represents a higher order. As a result, a sorting operation in ascending order would work for each coordinate consistently.
+- **Step 2)**: Once we generate the desired list, we then *sort* the list.
+- **Step 3)**: From the *sorted* list, we then extract the results, and group them by the `column` index.
+
+In the following, we give some sample implementations with both the BFS traversal and the DFS traversal.
+
+#### Implementation 1: BFS
+
+```java
+class Triplet<F, S, T> {
+    public F first;
+    public S second;
+    public T third;
+
+    public Triplet(F first, S second, T third) {
+        this.first = first;
+        this.second = second;
+        this.third = third;
+    }
+}
+
+class Solution {
+    // record the coordinate <column, row, node.val>
+    List<Triplet<Integer, Integer, Integer>> nodeList = new ArrayList<>();
+
+    // iterate using bfs to give each node a coordinate
+    private void BFS(TreeNode root) {
+        Queue<Triplet<TreeNode, Integer, Integer>> queue = new ArrayDeque();
+        int row = 0, column = 0;
+        queue.offer(new Triplet(root, row, column));
+
+        while (!queue.isEmpty()) {
+            Triplet<TreeNode, Integer, Integer> triplet = queue.poll();
+            root = triplet.first;
+            row = triplet.second;
+            column = triplet.third;
+
+            if (root != null) {
+                this.nodeList.add(new Triplet(column, row, root.val));
+                queue.offer(new Triplet(root.left, row + 1, column - 1));
+                queue.offer(new Triplet(root.right, row + 1, column + 1));
+            }
+        }
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+
+        List<List<Integer>> output = new ArrayList();
+        if (root == null) {
+            return output;
+        }
+
+        // step 1). BFS traversal
+        BFS(root);
+
+        // step 2). sort the global list by <column, row, value>
+        Collections.sort(this.nodeList, new Comparator<Triplet<Integer, Integer, Integer>>() {
+            @Override
+            public int compare(Triplet<Integer, Integer, Integer> t1,
+                    Triplet<Integer, Integer, Integer> t2) {
+                if (t1.first.equals(t2.first))
+                    if (t1.second.equals(t2.second))
+                        return t1.third - t2.third;
+                    else
+                        return t1.second - t2.second;
+                else
+                    return t1.first - t2.first;
+            }
+        });
+
+        // step 3). extract the values, partitioned by the column index.
+        List<Integer> currColumn = new ArrayList();
+        Integer currColumnIndex = this.nodeList.get(0).first;
+
+        for (Triplet<Integer, Integer, Integer> triplet : this.nodeList) {
+            Integer column = triplet.first, value = triplet.third;
+            if (column == currColumnIndex) {
+                currColumn.add(value);
+            } else {
+                output.add(currColumn);
+                currColumnIndex = column;
+                currColumn = new ArrayList();
+                currColumn.add(value);
+            }
+        }
+        output.add(currColumn);
+
+        return output;
+    }
+}
+```
+
+#### Implementation 2: DFS
+
+```java
+class Triplet<F, S, T> {
+    public final F first;
+    public final S second;
+    public final T third;
+
+    public Triplet(F first, S second, T third) {
+        this.first = first;
+        this.second = second;
+        this.third = third;
+    }
+}
+
+class Solution {
+    List<Triplet<Integer, Integer, Integer>> nodeList = new ArrayList<>();
+
+    private void DFS(TreeNode node, Integer row, Integer column) {
+        if (node == null)
+            return;
+        nodeList.add(new Triplet(column, row, node.val));
+        // preorder DFS traversal
+        this.DFS(node.left, row + 1, column - 1);
+        this.DFS(node.right, row + 1, column + 1);
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> output = new ArrayList();
+        if (root == null) {
+            return output;
+        }
+
+        // step 1). DFS traversal
+        DFS(root, 0, 0);
+
+        // step 2). sort the list by <column, row, value>
+        Collections.sort(this.nodeList, new Comparator<Triplet<Integer, Integer, Integer>>() {
+            @Override
+            public int compare(Triplet<Integer, Integer, Integer> t1,
+                    Triplet<Integer, Integer, Integer> t2) {
+                if (t1.first.equals(t2.first))
+                    if (t1.second.equals(t2.second))
+                        return t1.third - t2.third;
+                    else
+                        return t1.second - t2.second;
+                else
+                    return t1.first - t2.first;
+            }
+        });
+
+        // step 3). extract the values, grouped by the column index.
+        List<Integer> currColumn = new ArrayList();
+        Integer currColumnIndex = this.nodeList.get(0).first;
+
+        for (Triplet<Integer, Integer, Integer> triplet : this.nodeList) {
+            Integer column = triplet.first, value = triplet.third;
+            if (column == currColumnIndex) {
+                currColumn.add(value);
+            } else {
+                output.add(currColumn);
+                currColumnIndex = column;
+                currColumn = new ArrayList();
+                currColumn.add(value);
+            }
+        }
+        output.add(currColumn);
+
+        return output;
+    }
+}
+```
+
+**Complexity Analysis**
+
+Let *N* be the number of nodes in the input tree.
+
+- Time Complexity: O(*N*log*N*), which applies to both the BFS and DFS approaches.
+  - In the first step of the algorithm, we traverse the input tree with either BFS or DFS, which would take O(*N*) time.
+  - Secondly, we sort the obtained list of coordinates which contains *N* elements. The sorting operation would take O(*N*log*N*) time.
+  - Finally, we extract the results from the sorted list, which would take another O(*N*) time.
+  - To summarize, the overall time complexity of the algorithm would be O(*N*log*N*), which is dominated by the sorting operation in the second step.
+- Space Complexity: O(*N*). Again this applies to both the BFS and DFS approaches.
+  - In the first step of the algorithm, we build a list that contains the coordinates of all the nodes. Hence, we need O(*N*) space for this list.
+  - Additionally, for the BFS approach, we used a queue data structure to maintain the order of visits. At any given moment, the queue contains no more than **two levels** of nodes in the tree. The maximal number of nodes at one level is upper N/2, which is the number of the leaf nodes in a balanced binary tree. As a result, the space needed for the queue would be O(*N/2*⋅2)=O(*N*).
+  - Although we don't need the queue data structure for the DFS approach, the recursion in the DFS approach incurs some additional memory consumption on the function call stack. In the worst case, the input tree might be completely imbalanced, *e.g.* each node has only the left child node. In this case, the recursion would occur up to *N* times, which in turn would consume O(*N*) space in the function call stack.
+  - To summarize, the space complexity for the BFS approach would be O(*N*)+O(*N*)=O(*N*). And the same applies to the DFS approach.
+
