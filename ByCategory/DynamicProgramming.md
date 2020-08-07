@@ -242,3 +242,69 @@ As we can see this problem can be broken into subproblems, and it contains the o
 - Time complexity : O*(*n*). Single loop upto n*.
 - Space complexity : O*(*n*). dp* array of size n* is used.
 
+
+
+### 198. House Robber - Easy
+
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and **it will automatically contact the police if two adjacent houses were broken into on the same night**.
+
+Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight **without alerting the police**.
+
+ 
+
+**Example 1:**
+
+```
+Input: nums = [1,2,3,1]
+Output: 4
+Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
+             Total amount you can rob = 1 + 3 = 4.
+```
+
+**Example 2:**
+
+```
+Input: nums = [2,7,9,3,1]
+Output: 12
+Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
+             Total amount you can rob = 2 + 9 + 1 = 12.
+```
+
+#### Approach
+
+**Formula Derivation**
+
+- Let f(k) = the *largest* amount that you can rob from the first k houses
+- Let Ai =  the amount at the ith house
+
+Then, according to the problem:
+
+- k = 1, f(1) = A1;
+- k = 2, f(2) = Max(A1, A2);
+- k = 3, f(3) = Max(f(2), f(1) + A3);
+- ...
+
+Generally, the formula would be: ***f(k) = Max(f(k-1), f(k-2) + Ak)***
+
+#### Implementation
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        // k = -1, k = 0
+        int prevMax = 0, currMax = 0;
+        for (int x: nums) {
+            int temp = currMax;
+            currMax = Math.max(prevMax + x, currMax);
+            prevMax = temp;
+        }
+        return currMax;
+    }
+}
+```
+
+**Complexity analysis**
+
+- Time complexity : *O*(*n*). Assume that *n* is the number of houses, the time complexity is *O*(*n*).
+- Space complexity : *O(1)*.
+
