@@ -1198,3 +1198,25 @@ class Solution {
 - Time complexity: O(*N*), where *N* is a number of nodes. During preorder traversal, each node is visited once.
 - Space complexity: up to O(*N*) to keep the hashmap of prefix sums, where *N* is a number of nodes.
 
+**Similar Problem: 560. Subarray Sum Equals K - Meidum**
+
+*Implementation Using Prefix Sum or Cumulative Sum*
+
+```java
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int currSum = 0 ,count = 0;
+        HashMap<Integer, Integer> store = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            currSum += nums[i];
+            if (currSum == k) count++;
+            // if sum[i] - sum[j] = k, the sum of elements lying between indices i and j is k
+            count += store.getOrDefault(currSum - k, 0);
+            store.put(currSum, store.getOrDefault(currSum, 0) + 1);
+        }
+        
+        return count;
+    }
+}
+```
+
