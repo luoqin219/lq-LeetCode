@@ -1220,3 +1220,56 @@ class Solution {
 }
 ```
 
+
+
+### 199. Binary Tree Right Side View - Medium
+
+Given a binary tree, imagine yourself standing on the *right* side of it, return the values of the nodes you can see ordered from top to bottom.
+
+**Example:**
+
+```
+Input: [1,2,3,null,5,null,4]
+Output: [1, 3, 4]
+Explanation:
+
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+```
+
+#### Implementation: BFS
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        if (root == null) return new LinkedList<Integer>();
+        List<Integer> res = new LinkedList<>();
+        // ArrayDeque cannot be offered with a null object
+        Queue<TreeNode> visited = new LinkedList<>();
+        visited.offer(root);
+        visited.offer(null);
+        TreeNode prev, curr = root;
+        
+        while (!visited.isEmpty()) {
+            prev = curr;
+            curr = visited.poll();
+            // loop in the level to find the rightmost element
+            // in the end of a level, curr = null
+            while (curr != null) {
+                if (curr.left != null) visited.offer(curr.left);
+                if (curr.right != null) visited.offer(curr.right);
+                prev = curr;
+                curr = visited.poll();
+            }
+            // prev is the rightmost element of last level
+            res.add(prev.val);
+            if (!visited.isEmpty()) visited.offer(null); // end of a level
+        }
+        return res;
+    }
+}
+```
+
