@@ -308,3 +308,95 @@ class Solution {
 - Time complexity : *O*(*n*). Assume that *n* is the number of houses, the time complexity is *O*(*n*).
 - Space complexity : *O(1)*.
 
+
+
+#### 647. Palindromic Substrings - Medium
+
+Given a string, your task is to count how many palindromic substrings in this string.
+
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.
+
+**Example 1:**
+
+```
+Input: "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+```
+
+ 
+
+**Example 2:**
+
+```
+Input: "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+```
+
+ 
+
+**Note:**
+
+1. The input string length won't exceed 1000.
+
+#### Approach 1: Expand Around Center
+
+**Intuition**
+
+Insert a fake middle point into the string and expand around that.
+
+#### Implementation 1
+
+```java
+class Solution {
+    public int countSubstrings(String s) {
+        int len = s.length(), res = 0;
+        for (int mid = 0; mid <= 2*len-1; mid++) {
+            int left = mid / 2;
+            int right = left + mid % 2;
+            while (left >= 0 && right < len && s.charAt(left) == s.charAt(right)) {
+                res++;
+                left--;
+                right++;
+            }
+        }
+        return res;
+    }
+}
+```
+
+**Complexity Analysis**
+
+- Time Complexity: O(N^2) where N*N* is the length of `S`. Each expansion might do O(N) work.
+- Space Complexity: O(1).
+
+#### Implementation 2: More straightforward expand-around-center version
+
+```java
+   public int countSubstrings(String str) {
+        if(str == null || str.length() < 1) return 0;
+        int count = 0;
+        for(int i = 0; i < str.length(); i++){
+            count += countPalindromes(str, i, i); // count even length
+            count += countPalindromes(str, i, i+1); // count odd length
+        }
+        return count;
+    }
+    
+    private int countPalindromes(String str, int i, int j){
+        int count = 0;
+        while(i >= 0 && j < str.length() && str.charAt(i) == str.charAt(j)){
+            i--;
+            j++;
+            count++;
+        }
+        return count;
+    }
+```
+
+**Complexity Analysis**
+
+- Time Complexity: O(N^2) where N*N* is the length of `S`. Each expansion might do O(N) work.
+- Space Complexity: O(1).
+
