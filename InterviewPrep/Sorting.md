@@ -11,7 +11,7 @@
 |   Quick Sort    |         O(nlogn)          |         O(n^2)          |        O(nlogn)        |     O(nlogn)     |   No    |
 |   Merge Sort    |         O(nlogn)          |        O(nlogn)         |        O(nlogn)        |       O(n)       |   Yes   |
 | Insertion Sort  |          O(n^2)           |         O(n^2)          |          O(1)          |       O(1)       |   Yes   |
-|                 |                           |                         |                        |                  |         |
+|  Counting Sort  |          O(n+k)           |         O(n+k)          |         O(n+k)         |       O(k)       |   Yes   |
 |                 |                           |                         |                        |                  |         |
 |                 |                           |                         |                        |                  |         |
 |                 |                           |                         |                        |                  |         |
@@ -230,5 +230,49 @@ public static void insertionSort(int[] arr) {
         arr[j+1] = curr;
     }
 }
+```
+
+
+
+## 6. Counting Sort
+
+### Description
+
+[Counting sort](http://en.wikipedia.org/wiki/Counting_sort) is a sorting technique based on keys between a specific range. It works by counting the number of objects having distinct key values (kind of hashing). Then doing some arithmetic to calculate the position of each object in the output sequence.
+
+### Algorithm
+
+1. Find the largest element and smallest element in the unsorted array;
+2. Count the number of occurence of every element with value i, and store the count in to arr[i];
+3. Sum up all count (starting from arr[0], and resulting from ...+arr[i-1]+arr[i]);
+4. Reversly input into the target array: put every elemnt i into the new array newArr[arr[i]], and once after putting it minus arr[i] by 1;
+
+### Implementation in Java
+
+```java
+public static int[] CountingSort(int[] array) {
+        if (array.length == 0) return array;
+        int bias, min = array[0], max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            Math.max(max, array[i]);
+            Math.min(min, array[i]);
+        }
+        bias = 0 - min;
+        int[] bucket = new int[max - min + 1];
+        Arrays.fill(bucket, 0);
+        for (int i = 0; i < array.length; i++) {
+            bucket[array[i] + bias]++;
+        }
+        int index = 0, i = 0;
+        while (index < array.length) {
+            if (bucket[i] != 0) {
+                array[index] = i - bias;
+                bucket[i]--;
+                index++;
+            } else
+                i++;
+        }
+        return array;
+    }
 ```
 
