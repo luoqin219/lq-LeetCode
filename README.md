@@ -23,6 +23,7 @@ The Tech Interviews Prep part writes down notes from the book《Cracking the Cod
 - [Divide and Conquer](/ByCategory/DivideAndConquer.md)
 - [Dynamic Programming](/ByCategory/DynamicProgramming.md)
 - [Sliding Window](/ByCategory/SlidingWindow.md)
+- [Greedy](/ByCategory/Greedy.md)
 - [Mixed](/ByCategory/Mixed.md)
 
 ## Tech Interviews Prep
