@@ -101,8 +101,6 @@ Given the array `nums`, for each `nums[i]` find out how many numbers in the arra
 
 Return the answer in an array.
 
-
-
 **Example 1:**
 
 ```
@@ -158,9 +156,10 @@ class Solution {
 
 **Complexity Analysis**
 
-Space: O(N)
+- Space: O(N)
 
-Time: O(N^2)
+- Time: O(N^2)
+
 
 #### Implementation - Buck
 
@@ -189,6 +188,153 @@ class Solution {
 
 **Complexity Analysis**
 
-Space: O(N)
+- Space: O(N)
 
-Time: O(N)
+- Time: O(N)
+
+
+
+### 435. Non-overlapping Intervals - Medium
+
+Given a collection of intervals, find the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+
+**Example 1:**
+
+```
+Input: [[1,2],[2,3],[3,4],[1,3]]
+Output: 1
+Explanation: [1,3] can be removed and the rest of intervals are non-overlapping.
+```
+
+**Example 2:**
+
+```
+Input: [[1,2],[1,2],[1,2]]
+Output: 2
+Explanation: You need to remove two [1,2] to make the rest of intervals non-overlapping.
+```
+
+**Example 3:**
+
+```
+Input: [[1,2],[2,3]]
+Output: 0
+Explanation: You don't need to remove any of the intervals since they're already non-overlapping.
+```
+
+**Note:**
+
+1. You may assume the interval's end point is always bigger than its start point.
+2. Intervals like [1,2] and [2,3] have borders "touching" but they don't overlap each other.
+
+#### Approcah 1: Greedy approach based on END point
+
+**Algorithm**
+
+The Greedy approach just discussed was based on choosing intervals greedily based on the starting points. But in this approach, we go for choosing points greedily based on the end points. For this, firstly we sort the given intervals based on the end points. Then, we traverse over the sorted intervals. While traversing, if there is no overlapping between the previous interval and the current interval, we need not remove any interval. But, if an overlap exists between the previous interval and the current interval, we always drop the current interval.
+
+To explain how it works, again we consider every possible arrangement of the intervals.
+
+![Non_overlapping](https://leetcode.com/problems/non-overlapping-intervals/Figures/435_NonOverlapping_greedy3.JPG)
+
+**Case 1:**
+
+> The two intervals currently considered are non-overlapping:
+
+In this case, we need not remove any interval and for the next iteration the current interval becomes the previous interval.
+
+**Case 2:**
+
+> The two intervals currently considered are overlapping and the starting point of the later interval falls before the starting point of the previous interval:
+
+In this case, as shown in the figure below, it is obvious that the later interval completely subsumes the previous interval. Hence, it is advantageous to remove the later interval so that we can get more range available to accommodate future intervals. Thus, previous interval remains unchanged and the current interval is updated.
+
+**Case 3:**
+
+> The two intervals currently considered are overlapping and the starting point of the later interval falls before the starting point of the previous interval:
+
+In this case, the only opposition to remove the current interval arises because it seems that more intervals could be accommodated by removing the previous interval in the range marked by A. But that won't be possible as can be visualized with a case similar to Case 3a and 3b shown below in approach 2. But, if we remove the current interval, we can save the range B to accommodate further intervals. Thus, previous interval remains unchanged and the current interval is updated.
+
+**Implementation**
+
+```java
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals.length == 0) return 0;
+        Arrays.sort(intervals, (int[] a, int[] b) -> a[1] - b[1]);
+        int end = intervals[0][1];
+        int count = 1;
+        for (int i = 1; i < intervals.length; i++) {
+          if (intervals[i][0] >= end) {
+            end = intervals[i][1];
+            count++;
+          }
+        }
+        return intervals.length - count;
+    }
+}
+```
+
+**Complexity Analysis**
+
+- Time complexity : *O*(*n*log(*n*)). Sorting takes *O*(*n*log(*n*)) time.
+- Space complexity : *O*(1). No extra space is used.
+
+#### Approach 2: Greedy approach based on START point
+
+**Algorithm**
+
+**if two intervals are overlapping, we want to remove the interval that has the longer end point -- the longer interval will always overlap with more or the same number of future intervals compared to the shorter one**
+
+If we sort the given intervals based on starting points, the greedy approach works very well. While considering the intervals in the ascending order of starting points, we make use of a pointer prev pointer to keep track of the interval just included in the final list. While traversing, we can encounter 3 possibilities as shown in the figure:
+
+![Non_overlapping](https://leetcode.com/problems/non-overlapping-intervals/Figures/435_NonOverlapping_greedy1.JPG)
+
+**Case 1:**
+
+> The two intervals currently considered are non-overlapping:
+
+In this case, we need not remove any interval and we can continue by simply assigning the prev*p**r**e**v* pointer to the later interval and the count of intervals removed remains unchanged.
+
+**Case 2:**
+
+> The two intervals currently considered are overlapping and the end point of the later interval falls before the end point of the previous interval:
+
+In this case, we can simply take the later interval. The choice is obvious since choosing an interval of smaller width will lead to more available space labelled as A*A* and B*B*, in which more intervals can be accommodated. Hence, the prev*p**r**e**v* pointer is updated to current interval and the count of intervals removed is incremented by 1.
+
+**Case 3:**
+
+> The two intervals currently considered are overlapping and the end point of the later interval falls after the end point of the previous interval:
+
+In this case, we can work in a greedy manner and directly remove the later interval. To understand why this greedy approach works, we need to see the figure below, which includes all the subcases possible. It is clear from the figures that we choosing interval 1 always leads to a better solution in the future. Thus, the prev*p**r**e**v* pointer remains unchanged and the count of intervals removed is incremented by 1.
+
+![Non_overlapping](https://leetcode.com/problems/non-overlapping-intervals/Figures/435_NonOverlapping_greedy2.JPG)
+
+**Implementation**
+
+```java
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals.length == 0) return 0;
+        Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
+        int end = intervals[0][1], prev = 0, count = 0;
+        for (int i = 1; i < intervals.length; i++) {
+          if (intervals[prev][1] > intervals[i][0]) {
+            if (intervals[prev][1] > intervals[i][1]) {
+              prev = i;
+            }
+            count++;
+          } else {
+            prev = i;
+          }
+        }
+        return count;
+    }
+}
+```
+
+**Complexity Analysis**
+
+- Time complexity : *O*(*n*log(*n*)). Sorting takes *O*(*n*log(*n*)) time.
+- Space complexity : O(1). No extra space is used.
+
