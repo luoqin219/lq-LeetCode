@@ -48,6 +48,6 @@ class Solution {
 
 **Complexity Analysis**
 
-- Time Complexity: *O*(*N*), where *N* is the length of S*S*.
-- Space Complexity: O*(1)* to keep data structure `last` of not more than 26 characters.
+- Time Complexity: *O*(*N*), where *N* is the length of *S*.
+- Space Complexity: *O(1)* to keep data structure `last` of not more than 26 characters.
 
