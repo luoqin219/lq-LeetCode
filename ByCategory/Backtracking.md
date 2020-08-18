@@ -367,3 +367,218 @@ class CombinationIterator {
 
 - Time Complexity: O(*k*) both for `init()` and `next()` functions. The algorithm generates a new combination from the previous one in O(*k*) time.
 - Space Complexity: O(*k*) to keep the current combination of length *k*.
+
+
+
+### 967. Numbers With Same Consecutive Differences - Medium
+
+Return all **non-negative** integers of length `N` such that the absolute difference between every two consecutive digits is `K`.
+
+Note that **every** number in the answer **must not** have leading zeros **except** for the number `0` itself. For example, `01` has one leading zero and is invalid, but `0` is valid.
+
+You may return the answer in any order.
+
+**Example 1:**
+
+```
+Input: N = 3, K = 7
+Output: [181,292,707,818,929]
+Explanation: Note that 070 is not a valid number, because it has leading zeroes.
+```
+
+**Example 2:**
+
+```
+Input: N = 2, K = 1
+Output: [10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98]
+```
+
+**Note:**
+
+1. `1 <= N <= 9`
+2. `0 <= K <= 9`
+
+#### Approach 1: Backtracking
+
+**Implementation**
+
+```java
+List<Integer> result = new ArrayList<>();
+public int[] numsSameConsecDiff(int N, int K) {
+    if (N == 1) // edge case, when N == 1 we should start answer sequence from 0
+        result.add(0);
+    
+    // start forming sequences starting from 1 to 9
+    for (int i = 1; i < 10; i++) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(i);
+        backtrack(N-1, K, sb);
+    }
+    
+    // transform our result to array that matches the expected output 
+    int[] arr = new int[result.size()];
+    for (int i = 0; i < arr.length; i++)
+        arr[i] = result.get(i);
+    return arr;
+}
+
+void backtrack(int N, int K, StringBuilder sb) {
+    if (N == 0){ // come to the limit of numbers with valid sequence
+        result.add(Integer.valueOf(sb.toString()));
+        return;
+    }
+    
+    int prev = sb.charAt(sb.length()-1) -'0';// check abs diff curr - previous == K
+    for (int curr = 0; curr <10; curr++) {
+        if(Math.abs(curr - prev) == K){
+            sb.append(curr);
+            backtrack(N-1, K, sb);
+            sb.setLength(sb.length()-1);
+        }
+    }
+}
+```
+
+
+
+#### Approach 2: DFS (Depth-First Search)
+
+**Intuition**
+
+If one is not familiar with the concepts of DFS and BFS, we have an Explore card called [Queue & Stack](https://leetcode.com/explore/learn/card/queue-stack/) where we cover the [DFS traversal](https://leetcode.com/explore/learn/card/queue-stack/232/practical-application-stack/) as well as the [BFS traversal](https://leetcode.com/explore/learn/card/queue-stack/231/practical-application-queue/).
+
+In this section, we will start from the DFS strategy, which arguably is more intuitive for this problem.
+
+As we stated in the overview section, we could build a valid digit combination *digit by digit* or (node by node in terms of tree).
+
+For a number consisting of `N` digits, we start from the highest digit and walk through to the lowest digit. At each step, we might have several candidates that are eligible to be explored.
+
+With the DFS strategy, we prioritize the *depth* over the *breadth*, *i.e.* we pick one of the candidates and continue the exploration before moving on to the other candidates that are of the same level.
+
+**Algorithm**
+
+Intuitively we could implement the DFS algorithm with recursion. Here we define a recursive function `DFS(N, num)` (in Python) whose goal is to come up the combinations for the remaining `N` digits, starting from the current `num`. Note that, the signature of the function is slightly different in our Java implementation. Yet, the semantics of the function remains the same.
+
+![DFS example](https://leetcode.com/problems/numbers-with-same-consecutive-differences/Figures/967/967_dfs_example.png)
+
+For instance, in the previous examples, where `N=3` and `K=2`, and there is a moment we would invoke `DFS(1, 13)` which is to add another digit to the existing number `13` so that the final number meets the requirements. If the DFS function works properly, we should have the numbers of `135` and `131` as results after the invocation.
+
+We could implement the recursive function in the following steps:
+
+- As a base case, when `N=0` *i.e.* no more remaining digits to complete, we could return the current `num` as the result.
+- Otherwise, there are still some remaining digits to be added to the current number, *e.g.* `13`. There are two potential cases to explore, based on the last digit of the current number which we denote as `tail_digit`.
+  - Adding the difference `K` to the last digit, *i.e.* `tail_digit + K`.
+  - Deducting the difference `K` from the last digit, *i.e.* `tail_digit - K`.
+- If the result of either above case falls into the valid digit range (*i.e.* [0, 9][0,9]), we then continue the exploration by invoking the function itself.
+
+Once we implement the `DFS(N, num)` function, we then simply call this function over the scope of [1, 9][1,9], *i.e.* the valid digits for the highest position.
+
+**Note**: If we are asked to return numbers of a single digit (i.e. `N=1`), then regardless of `K`, all digits are valid, including zero. We treat this as a special case in the code, since in our implementation of DFS function, we will never return zero as the result.
+
+```java
+class Solution {
+
+    public int[] numsSameConsecDiff(int N, int K) {
+        if (N == 1)
+            return new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        List<Integer> results = new ArrayList<Integer>();
+        for (int num = 1; num < 10; ++num)
+            this.DFS(N - 1, num, K, results);
+
+        // convert the ArrayList to int[]
+        return results.stream().mapToInt(i->i).toArray();
+    }
+
+    protected void DFS(int N, int num, int K, List<Integer> results) {
+        if (N == 0) {
+            results.add(num);
+            return;
+        }
+        List<Integer> nextDigits = new ArrayList<>();
+
+        Integer tailDigit = num % 10;
+        nextDigits.add(tailDigit + K);
+        if (K != 0)
+            nextDigits.add(tailDigit - K);
+        for (Integer nextDigit : nextDigits) {
+            if (0 <= nextDigit && nextDigit < 10) {
+                Integer newNum = num * 10 + nextDigit;
+                this.DFS(N - 1, newNum, K, results);
+            }
+        }
+    }
+}
+```
+
+**Complexity Analysis**
+
+Let *N* be the number of digits for a valid combination, and *K* be the difference between digits.
+
+<img src="/Users/qinluo/Library/Application Support/typora-user-images/image-20200818154328788.png" alt="image-20200818154328788" style="zoom:50%;" />
+
+
+
+#### Approach 3: BFS (Breadth-First Search)
+
+**Intuition**
+
+It might be more intuitive to come up a DFS solution as we presented before. However, it is also viable to solve this problem with *BFS* (Breadth-First Search) traversal strategy.
+
+> Rather than building the solution one by one, we could do it *batch by batch*, *i.e.* level by level.
+
+Each level contains the numbers that are of the same amount of digits. Also, each level corresponds to the solutions with a specific number of digits.
+
+![BFS](https://leetcode.com/problems/numbers-with-same-consecutive-differences/Figures/967/967_BFS.png)
+
+For example, given `N=3` and `K=7`, at the first level, we would have potentially 9 candidates (*i.e.* `[1, 2, 3, 4, 5, 7, 8, 9]`). When we move on to the second level, the candidates are reduced down to `[18, 29, 70, 81, 92]`. Finally, at the last level, we would have the solutions as `[181, 292, 707, 818, 929]`.
+
+**Algorithm**
+
+Here are a few steps to implement the BFS algorithm for this problem.
+
+- We could implement the algorithm with nested two-levels loops, where the outer loop iterates through levels and the inner loop handles the elements within each level.
+- We could use a list data structure to keep the numbers for a single level, *i.e.* here we name the variable as `queue`.
+- For each number in the queue, we could apply the same logics as in the DFS approach, except the last step, rather than making a recursive call for the next number we simply append the number to the queue for the next level.
+
+```java
+class Solution {
+
+    public int[] numsSameConsecDiff(int N, int K) {
+
+        if (N == 1)
+            return new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        List<Integer> queue = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        for(int level = 1; level < N; level++) {
+            ArrayList<Integer> nextQueue = new ArrayList<>();
+            // iterate through each number within the level
+            for (Integer num : queue) {
+                Integer tailDigit = num % 10;
+
+                ArrayList<Integer> nextDigits = new ArrayList<>();
+                nextDigits.add(tailDigit + K);
+                if (K != 0)
+                    nextDigits.add(tailDigit - K);
+                for (Integer nextDigit : nextDigits) {
+                    if (0 <= nextDigit && nextDigit < 10) {
+                        Integer newNum = num * 10 + nextDigit;
+                        nextQueue.add(newNum);
+                    }
+                }
+            }
+            // prepare for the next level
+            queue = nextQueue;
+        }
+
+        return queue.stream().mapToInt(i->i).toArray();
+    }
+}
+```
+
+**Complexity Analysis**
+
+Let *N* be the number of digits for a valid combination, and *K* be the difference between digits.
+
+![image-20200818154727444](/Users/qinluo/Library/Application Support/typora-user-images/image-20200818154727444.png)
+
