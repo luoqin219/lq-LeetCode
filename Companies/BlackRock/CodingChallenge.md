@@ -42,3 +42,72 @@ The output should the change from highest to lowest denomination.
 
 #### Implementation
 
+```java
+import java.io.IOException;
+import java.math.BigDecimal;
+
+public class Solution {
+    class Change {
+        final BigDecimal[] COINS = new BigDecimal[] {
+                new BigDecimal("0.01"),
+                new BigDecimal("0.02"),
+                new BigDecimal("0.05"),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.2"),
+                new BigDecimal("0.5"),
+                new BigDecimal("1"),
+                new BigDecimal("2"),
+                new BigDecimal("5"),
+                new BigDecimal("10"),
+                new BigDecimal("20"),
+                new BigDecimal("50")};
+        final String[] NAMES = new String[] {
+                "One Pence", "Two Pence", "Five Pence", "Ten Pence", "Twenty Pence", "Fifty Pence",
+                "One Pound", "Two Pounds", "Five Pounds", "Ten Pounds", "Twenty Pounds", "Fifty Pounds"
+        };
+        BigDecimal amount;
+        int[] coinsCnt = new int[COINS.length];
+
+        public Change(BigDecimal amount) {
+            this.amount = amount;
+        }
+
+        public void getLeastChangeCoins(BigDecimal change) {
+            for (int i = COINS.length - 1; i >= 0; i--) {
+                if (change.compareTo(BigDecimal.ZERO) > 0) {
+                    while (change.compareTo(COINS[i]) >= 0) {
+                        change = change.subtract(COINS[i]);
+                        coinsCnt[i]++;
+                    }
+                } else
+                    break;
+            }
+        }
+
+        public void printResult() {
+            if (amount.compareTo(BigDecimal.ZERO) == 0) System.out.println("Zero");
+            else if (amount.compareTo(BigDecimal.ZERO) < 0) System.out.println("ERROR");
+            else {
+                getLeastChangeCoins(amount);
+                StringBuilder sb = new StringBuilder();
+                for (int i = coinsCnt.length - 1; i >= 0; i--) {
+                    while (coinsCnt[i] > 0) {
+                        sb.append(NAMES[i] + ", ");
+                        coinsCnt[i]--;
+                    }
+                }
+                System.out.println(sb.substring(0, sb.length() - 2));
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        double price = 10.56;
+        double cash = 20;
+        Solution sl = new Solution();
+        Change money = sl.new Change(new BigDecimal(String.valueOf(cash - price)));
+        money.printResult();
+    }
+}
+```
+
