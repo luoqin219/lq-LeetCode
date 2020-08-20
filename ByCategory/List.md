@@ -352,3 +352,113 @@ public class Solution {
 
 - Time complexity : *O*(*m*+*n*).
 - Space complexity : *O*(1).
+
+
+
+### 143. Reorder List - Medium
+
+Given a singly linked list *L*: *L*0→*L*1→…→*Ln*-1→*L*n,
+reorder it to: *L*0→*L*n*→*L*1→*L*n*-1→*L*2→*Ln*-2→…
+
+You may **not** modify the values in the list's nodes, only nodes itself may be changed.
+
+**Example 1:**
+
+```
+Given 1->2->3->4, reorder it to 1->4->2->3.
+```
+
+**Example 2:**
+
+```
+Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+```
+
+#### Approach 1: Reverse the Second Part of the List and Merge Two Sorted Lists
+
+**Overview**
+
+- Find a middle node of the linked list. If there are two middle nodes, return the second middle node. Example: for the list `1->2->3->4->5->6`, the middle element is `4`.
+- Once a middle node has been found, reverse the second part of the list. Example: convert `1->2->3->4->5->6` into `1->2->3->4` and `6->5->4`.
+- Now merge the two sorted lists. Example: merge `1->2->3->4` and `6->5->4` into `1->6->2->5->3->4`.
+
+<img src="https://leetcode.com/problems/reorder-list/Figures/143/overview.png" alt="append" style="zoom: 50%;" />
+
+Now let's check each algorithm part in more detail.
+
+**Find a Middle Node**
+
+Let's use two pointers, `slow` and `fast`. While the slow pointer moves one step forward `slow = slow.next`, the fast pointer moves two steps forward `fast = fast.next.next`, *i.e.* `fast` traverses twice as fast as `slow`. When the fast pointer reaches the end of the list, the slow pointer should be in the middle.
+
+<img src="https://leetcode.com/problems/reorder-list/Figures/143/slow_fast.png" alt="append" style="zoom:50%;" />
+
+<iframe src="https://leetcode.com/playground/GeNJhikz/shared" frameborder="0" width="100%" height="174" name="GeNJhikz" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Reverse the Second Part of the List**
+
+Let's traverse the list starting from the middle node `slow` and its virtual predecessor `None`. For each current node, save its neighbours: the previous node `prev` and the next node `tmp = curr.next`.
+
+While you're moving along the list, change the node's next pointer to point to the previous node: `curr.next = prev`, and shift the current node to the right for the next iteration: `prev = curr`, `curr = tmp`.
+
+<img src="https://leetcode.com/problems/reorder-list/Figures/143/reverse2.png" alt="append" style="zoom:50%;" />
+
+<iframe src="https://leetcode.com/playground/Rngn8AQV/shared" frameborder="0" width="100%" height="242" name="Rngn8AQV" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Merge Two Sorted Lists**
+
+This algorithm is similar to the one for list reversal.
+
+Let's pick the first node of each list - first and second, and save their successors. While you're traversing the list, set the first node's next pointer to point to the second node, and the second node's next pointer to point to the successor of the first node. For this iteration the job is done, and for the next iteration move to the previously saved nodes' successors.
+
+<img src="https://leetcode.com/problems/reorder-list/Figures/143/first_second.png" alt="append" style="zoom:50%;" />
+
+<iframe src="https://leetcode.com/playground/9t4zjDtN/shared" frameborder="0" width="100%" height="259" name="9t4zjDtN" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+**Implementation**
+
+```java
+class Solution {
+  public void reorderList(ListNode head) {
+    if (head == null) return;
+
+    // find the middle of linked list [Problem 876]
+    // in 1->2->3->4->5->6 find 4 
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+
+    // reverse the second part of the list [Problem 206]
+    // convert 1->2->3->4->5->6 into 1->2->3->4 and 6->5->4
+    // reverse the second half in-place
+    ListNode prev = null, curr = slow, tmp;
+    while (curr != null) {
+      tmp = curr.next;
+
+      curr.next = prev;
+      prev = curr;
+      curr = tmp;
+    }
+
+    // merge two sorted linked lists [Problem 21]
+    // merge 1->2->3->4 and 6->5->4 into 1->6->2->5->3->4
+    ListNode first = head, second = prev;
+    while (second.next != null) {
+      tmp = first.next;
+      first.next = second;
+      first = tmp;
+
+      tmp = second.next;
+      second.next = first;
+      second = tmp;
+    }
+  }
+}
+```
+
+**Complexity Analysis**
+
+- Time complexity: O(*N*). There are three steps here. To identify the middle node takes O(*N*) time. To reverse the second part of the list, one needs *N*/2 operations. The final step, to merge two lists, requires *N*/2 operations as well. In total, that results in O(*N*) time complexity.
+- Space complexity: O(1), since we do not allocate any additional data structures.
+
