@@ -59,9 +59,7 @@ class Solution {
 }
 ```
 
- 利用归并的思想，递归地将当前链表分为两段，然后merge，分两段的方法是使用 fast-slow  法，用两个指针，一个每次走两步，一个走一步，知道快的走到了末尾，然后慢的所在位置就是中间位置，这样就分成了两段。merge时，把两段头部节点值比较，用一个 p 指向较小的，且记录第一个节点，然后  两段的头一步一步向后走，p也一直向后走，总是指向较小节点，直至其中一个头为NULL，处理剩下的元素。最后返回记录的头即可。 
-
-![image-20191107174240710](C:\Users\73995\AppData\Roaming\Typora\typora-user-images\image-20191107174240710.png)
+ 利用归并的思想，递归地将当前链表分为两段，然后merge，分两段的方法是使用 fast-slow  法，用两个指针，一个每次走两步，一个走一步。当快的走到了末尾，慢的所在位置就是中间位置，这样就分成了两段。merge时，把两段头部节点值比较，用一个 p 指向较小的，且记录第一个节点，然后 两段的头一步一步向后走，p也一直向后走，总是指向较小节点，直至其中一个头为NULL，处理剩下的元素。最后返回记录的头即可。 
 
 
 
@@ -91,7 +89,7 @@ class Solution {
         if (intervals.length <= 1)
 			return intervals;
 
-		// Sort by ascending starting point
+		// sort by ascending starting point
 		Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
         List<int[]> ret = new ArrayList<>();
         int[] prev = null;
@@ -110,9 +108,12 @@ class Solution {
 }
 ```
 
-O(NlogN)
+**Complexity Analysis**
 
-O(N)
+- Time: O(NlogN)
+
+- Space: O(N)
+
 
 
 
@@ -188,22 +189,31 @@ Output: 1
 ```java
 class Solution {
     public int minMeetingRooms(int[][] intervals) {
+        // check corner cases
         if (intervals == null || intervals.length == 0) return 0;
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>(intervals.length, (Integer a, Integer b) -> a - b); // allocate the meeting rooms
+        // min-heap
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(intervals.length, (Integer a, Integer b) -> a - b);
         Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
         minHeap.add(intervals[0][1]);
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] >= minHeap.peek()) minHeap.poll(); // occupy the free room
-            minHeap.add(intervals[i][1]); // add the newest end time
+            // occupy the free room
+            if (intervals[i][0] >= minHeap.peek()) minHeap.poll(); 
+            // add the newest end time
+            minHeap.add(intervals[i][1]);
         }
         return minHeap.size();
     }
 }
 ```
 
-O(NlogN)
+**Complexity Analysis**
 
-O(N)
+- Time Complexity: O(NlogN).
+
+  - There are two major portions that take up time here. One is `sorting` of the array that takes O(Nlog N) considering that the array consists of N*N* elements.
+  - Then we have the `min-heap`. In the worst case, all *N* meetings will collide with each other. In any case we have N*N* add operations on the heap. In the worst case we will have *N* extract-min operations as well. Overall complexity being (NlogN) since extract-min operation on a heap takes O(logN).
+
+- Space Complexity: *O*(*N*) because we construct the `min-heap` and that can contain N*N* elements in the worst case as described above in the time complexity section. Hence, the space complexity is O(N).
 
 #### Approach 1: Priority Queues
 
@@ -242,22 +252,6 @@ Let us look at the algorithm before moving onto the implementation.
 5. If not, then we allocate a new room and add it to the heap.
 6. After processing all the meetings, the size of the heap will tell us the number of rooms allocated. This will be the minimum number of rooms needed to accommodate all the meetings.
 
-Let us not look at the implementation for this algorithm.
-
-<iframe src="https://leetcode.com/playground/7kw8gCgZ/shared" frameborder="0" width="100%" height="500" name="7kw8gCgZ" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
-
-
-**Complexity Analysis**
-
-- Time Complexity: O(NlogN).
-
-  - There are two major portions that take up time here. One is `sorting` of the array that takes O(Nlog N) considering that the array consists of N*N* elements.
-  - Then we have the `min-heap`. In the worst case, all N*N* meetings will collide with each other. In any case we have N*N* add operations on the heap. In the worst case we will have N*N* extract-min operations as well. Overall complexity being (NlogN) since extract-min operation on a heap takes O*(log*N).
-
-- Space Complexity: O(N)*O*(*N*) because we construct the `min-heap` and that can contain N*N* elements in the worst case as described above in the time complexity section. Hence, the space complexity is O(N).
-
-  
-
 ------
 
 #### Approach 2: Chronological Ordering
@@ -295,8 +289,63 @@ The next two diagrams process the remaining meetings and we see that we can now 
 
 Let us not look at the implementation for this algorithm.
 
-<iframe src="https://leetcode.com/playground/gbwyrqH7/shared" frameborder="0" width="100%" height="500" name="gbwyrqH7" style="box-sizing: border-box; margin: 20px 0px; color: rgba(0, 0, 0, 0.65); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+```java
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+    // check corner case
+    if (intervals.length == 0) {
+      return 0;
+    }
 
+    Integer[] start = new Integer[intervals.length];
+    Integer[] end = new Integer[intervals.length];
+
+    for (int i = 0; i < intervals.length; i++) {
+      start[i] = intervals[i][0];
+      end[i] = intervals[i][1];
+    }
+
+    // sort the intervals by end time
+    Arrays.sort(
+        end,
+        new Comparator<Integer>() {
+          public int compare(Integer a, Integer b) {
+            return a - b;
+          }
+        });
+
+    // sort the intervals by start time
+    Arrays.sort(
+        start,
+        new Comparator<Integer>() {
+          public int compare(Integer a, Integer b) {
+            return a - b;
+          }
+        });
+
+    int startPointer = 0, endPointer = 0;
+	// keep track of maximum number of rooms used.
+    int usedRooms = 0;
+
+    while (startPointer < intervals.length) {
+      // if there is a meeting that has ended by the time the meeting at `start_pointer` starts
+      if (start[startPointer] >= end[endPointer]) {
+        usedRooms -= 1;
+        endPointer += 1;
+      }
+
+      // do this irrespective of whether a room frees up or not.
+      // if a room got free, then this used_rooms += 1 wouldn't have any effect. used_rooms would
+      // remain the same in that case. If no room was free, then this would increase used_rooms
+      usedRooms += 1;
+      startPointer += 1;
+
+    }
+
+    return usedRooms;
+  }
+}
+```
 
 **Complexity Analysis**
 
