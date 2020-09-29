@@ -86,15 +86,14 @@ Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 ```java
 class Solution {
     public int[][] merge(int[][] intervals) {
-        if (intervals.length <= 1)
-			return intervals;
-
+        if (intervals.length <= 1) return intervals;
+        
 		// sort by ascending starting point
-		Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
         List<int[]> ret = new ArrayList<>();
         int[] prev = null;
         for (int[] inter : intervals) {
-            //if prev is null or curr.start > prev.end, add the interval
+            // if prev is null or curr.start > prev.end, add the interval
             if (prev == null || inter[0] > prev[1]) {
                 ret.add(inter);
                 prev = inter;
@@ -513,10 +512,10 @@ public class Solution {
     public int hIndex(int[] citations) {
         int n = citations.length;
         int[] papers = new int[n + 1];
-        // counting papers for each citation number
+        // count papers for each citation number
         for (int c: citations)
             papers[Math.min(n, c)]++;
-        // finding the h-index
+        // find the h-index
         int k = n;
         for (int s = papers[n]; k > s; s += papers[k])
             k--;
@@ -527,6 +526,6 @@ public class Solution {
 
 **Complexity Analysis**
 
-- Time complexity : O*(*n). There are two steps. The counting part is O*(n*) since we traverse the `citations` array once and only once. The second part of finding the h*h*-index is also O(n)*O*(*n*) since we traverse the `papers` array at most once. Thus, the entire algorithm is O(n)
-- Space complexity : *O*(*n*). We use O*(*n) auxiliary space to store the counts.
+- Time complexity : O(n). There are two steps. The counting part is O(n) since we traverse the `citations` array once and only once. The second part of finding the h*h*-index is also O(n) since we traverse the `papers` array at most once. Thus, the entire algorithm is O(n)
+- Space complexity : *O*(*n*). We use O(n) auxiliary space to store the counts.
 
